@@ -1,0 +1,11 @@
+:root {
+  --primary: #fcfbf9;
+  --text: #333333;
+}
+
+body {
+  background-color: var(--primary) !important;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
