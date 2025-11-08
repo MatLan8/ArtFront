@@ -1,0 +1,34 @@
+.galleryLayout {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+
+.sidebarFixedWrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  z-index: 30;
+}
+
+
+.sidebarInlineWrapper {
+  position: relative;
+  width: 100%;
+}
+
+
+.mainContent {
+  flex: 1;
+  padding: 0;
+  transition: margin-left 200ms ease;
+}
+
+.shifted {
+  margin-left: 280px;
+}
+
+

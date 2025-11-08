@@ -1,0 +1,26 @@
+.masonryGrid {
+  display: flex !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 1rem;
+  box-sizing: border-box;
+  gap: 1rem;
+  justify-content: flex-end; /* <-- right-align columns */
+}
+
+.masonryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;               /* spacing between items in column */
+  padding: 0;
+  background-clip: padding-box;
+  flex: 1 1 0;             /* columns share available width */
+  min-width: 220px;        /* prevent columns from becoming too narrow */
+}
+
+.masonryItem {
+  margin: 0;
+  width: 100%;
+}
+
+
