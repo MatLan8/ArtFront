@@ -1,4 +1,3 @@
-import "./App.css";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
 import { Routes, Route } from "react-router-dom";
 

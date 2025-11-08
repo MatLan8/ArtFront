@@ -1,0 +1,53 @@
+.Container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  max-width: 1200px;
+  width: 100%;
+  margin: 100px auto;
+  height: auto;
+
+  align-items: flex-start;
+}
+
+.Cart {
+  flex: 2;
+  background-color: var(--secondary);
+  padding: 30px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.PriceSummary {
+  flex: 1;
+  display: flex;
+  height: auto;
+  background-color: var(--secondary);
+  padding: 30px;
+  border-radius: 10px;
+
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0px;
+}
+
+.divider {
+  border: none; /* remove default border */
+  height: 2px; /* thickness of the line */
+  background-color: black; /* color of the line */
+  margin: 10px 0; /* spacing around the line */
+}
