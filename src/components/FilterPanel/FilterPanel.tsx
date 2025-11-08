@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { ChevronDown, ChevronUp, X, ChevronRight } from 'lucide-react';
 import styles from './FilterPanel.module.css';
+import { useState, useEffect } from 'react';
 
 export interface FilterOptions {
   styles: string[];
@@ -13,33 +13,28 @@ export interface FilterOptions {
 
 interface FilterPanelProps {
   options: FilterOptions;
-  selectedFilters: {
-    style?: string | null;
-    material?: string | null;
-    technique?: string | null;
-    colorPalette?: string | null;
-    artType?: string | null;
-    period?: string | null;
-  };
-  onFilterChange: (filterType: string, value: string | null) => void;
+  selectedFilters: Record<string, string[]>; // now arrays
+  onFilterChange: (filterType: string, values: string[]) => void; // arrays
+  isMobile?: boolean;
+  onClose?: () => void;
 }
 
-/* --- Props for inner section component --- */
 interface FilterSectionProps {
   title: string;
   expanded: boolean;
   onToggle: () => void;
-  selected?: string | null;
+  selected: string[]; // array of selected values
   options: string[];
-  onChange: (value: string | null) => void;
+  onChange: (value: string) => void; // toggle a single value
 }
 
 export default function FilterPanel({
   options,
   selectedFilters,
-  onFilterChange
+  onFilterChange,
+  isMobile = false,
+  onClose
 }: FilterPanelProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     styles: true,
     materials: true,
@@ -57,102 +52,135 @@ export default function FilterPanel({
   };
 
   const clearAllFilters = () => {
-    ['style', 'material', 'technique', 'colorPalette', 'artType', 'period'].forEach(filter => {
-      onFilterChange(filter, null);
-    });
+    Object.keys(selectedFilters).forEach(key => onFilterChange(key, []));
   };
 
-  if (isCollapsed) {
-    return (
-      <button
-        onClick={() => setIsCollapsed(false)}
-        className={styles.expandButton}
-        aria-label="Show filters"
-        type="button"
-      >
-        <ChevronRight size={20} />
-        <span>Show Filters</span>
-      </button>
-    );
-  }
-
   return (
-    <div className={styles.filterPanel}>
-      <div className={styles.header}>
-        <h2>Filters</h2>
-        <div className={styles.headerActions}>
-          <button onClick={clearAllFilters} className={styles.clearButton} type="button">Clear All</button>
-          <button onClick={() => setIsCollapsed(true)} className={styles.collapseButton} aria-label="Hide filters" type="button">
-            <X size={20} />
+    <>
+      {/* Mobile: Show "Expand Filter" button if collapsed */}
+      {isMobile && onClose && (
+        <button
+          className={styles.expandButton}
+          onClick={() => onClose()}
+        >
+          <ChevronRight size={20} />
+          Show Filters
+        </button>
+      )}
+
+      {/* Filter panel */}
+      <div className={isMobile ? styles.collapsedOverlay : styles.filterPanel}>
+        <div className={styles.header}>
+          <h2>Filters</h2>
+
+          {/* Mobile: Close button */}
+          {isMobile && onClose && (
+            <button onClick={onClose} className={styles.collapseButton}>
+              <X size={20} />
+            </button>
+          )}
+
+          <button onClick={clearAllFilters} className={styles.clearButton}>
+            Clear All
           </button>
         </div>
+
+        {/* Filter sections */}
+        <FilterSection
+          title="Style"
+          expanded={expandedSections.styles}
+          onToggle={() => toggleSection('styles')}
+          selected={selectedFilters.styles || []}
+          options={options.styles}
+          onChange={value => {
+            const current = selectedFilters.styles || [];
+            const next = current.includes(value)
+              ? current.filter(v => v !== value)
+              : [...current, value];
+            onFilterChange('styles', next);
+          }}
+        />
+
+        <FilterSection
+          title="Material"
+          expanded={expandedSections.materials}
+          onToggle={() => toggleSection('materials')}
+          selected={selectedFilters.materials || []}
+          options={options.materials}
+          onChange={value => {
+            const current = selectedFilters.materials || [];
+            const next = current.includes(value)
+              ? current.filter(v => v !== value)
+              : [...current, value];
+            onFilterChange('materials', next);
+          }}
+        />
+
+        <FilterSection
+          title="Technique"
+          expanded={expandedSections.techniques}
+          onToggle={() => toggleSection('techniques')}
+          selected={selectedFilters.techniques || []}
+          options={options.techniques}
+          onChange={value => {
+            const current = selectedFilters.techniques || [];
+            const next = current.includes(value)
+              ? current.filter(v => v !== value)
+              : [...current, value];
+            onFilterChange('techniques', next);
+          }}
+        />
+
+        <FilterSection
+          title="Color Palette"
+          expanded={expandedSections.colorPalettes}
+          onToggle={() => toggleSection('colorPalettes')}
+          selected={selectedFilters.colorPalettes || []}
+          options={options.colorPalettes}
+          onChange={value => {
+            const current = selectedFilters.colorPalettes || [];
+            const next = current.includes(value)
+              ? current.filter(v => v !== value)
+              : [...current, value];
+            onFilterChange('colorPalettes', next);
+          }}
+        />
+
+        <FilterSection
+          title="Art Type"
+          expanded={expandedSections.artTypes}
+          onToggle={() => toggleSection('artTypes')}
+          selected={selectedFilters.artTypes || []}
+          options={options.artTypes}
+          onChange={value => {
+            const current = selectedFilters.artTypes || [];
+            const next = current.includes(value)
+              ? current.filter(v => v !== value)
+              : [...current, value];
+            onFilterChange('artTypes', next);
+          }}
+        />
+
+        <FilterSection
+          title="Period"
+          expanded={expandedSections.periods}
+          onToggle={() => toggleSection('periods')}
+          selected={selectedFilters.periods || []}
+          options={options.periods}
+          onChange={value => {
+            const current = selectedFilters.periods || [];
+            const next = current.includes(value)
+              ? current.filter(v => v !== value)
+              : [...current, value];
+            onFilterChange('periods', next);
+          }}
+        />
       </div>
-
-      <FilterSection
-        title="Style"
-        expanded={expandedSections.styles}
-        onToggle={() => toggleSection('styles')}
-        selected={selectedFilters.style ?? null}
-        options={options.styles}
-        onChange={(value: string | null) => onFilterChange('style', value)}
-      />
-
-      <FilterSection
-        title="Material"
-        expanded={expandedSections.materials}
-        onToggle={() => toggleSection('materials')}
-        selected={selectedFilters.material ?? null}
-        options={options.materials}
-        onChange={(value: string | null) => onFilterChange('material', value)}
-      />
-
-      <FilterSection
-        title="Technique"
-        expanded={expandedSections.techniques}
-        onToggle={() => toggleSection('techniques')}
-        selected={selectedFilters.technique ?? null}
-        options={options.techniques}
-        onChange={(value: string | null) => onFilterChange('technique', value)}
-      />
-
-      <FilterSection
-        title="Color Palette"
-        expanded={expandedSections.colorPalettes}
-        onToggle={() => toggleSection('colorPalettes')}
-        selected={selectedFilters.colorPalette ?? null}
-        options={options.colorPalettes}
-        onChange={(value: string | null) => onFilterChange('colorPalette', value)}
-      />
-
-      <FilterSection
-        title="Art Type"
-        expanded={expandedSections.artTypes}
-        onToggle={() => toggleSection('artTypes')}
-        selected={selectedFilters.artType ?? null}
-        options={options.artTypes}
-        onChange={(value: string | null) => onFilterChange('artType', value)}
-      />
-
-      <FilterSection
-        title="Period"
-        expanded={expandedSections.periods}
-        onToggle={() => toggleSection('periods')}
-        selected={selectedFilters.period ?? null}
-        options={options.periods}
-        onChange={(value: string | null) => onFilterChange('period', value)}
-      />
-    </div>
+    </>
   );
 }
 
-function FilterSection({
-  title,
-  expanded,
-  onToggle,
-  selected,
-  options,
-  onChange
-}: FilterSectionProps) {
+function FilterSection({ title, expanded, onToggle, selected, options, onChange }: FilterSectionProps) {
   return (
     <div className={styles.filterSection}>
       <button onClick={onToggle} className={styles.sectionHeader} type="button">
@@ -165,10 +193,9 @@ function FilterSection({
           {options.map(option => (
             <label key={option} className={styles.optionLabel}>
               <input
-                type="radio"
-                name={title.toLowerCase()}
-                checked={selected === option}
-                onChange={() => onChange(selected === option ? null : option)} 
+                type="checkbox"
+                checked={selected.includes(option)}
+                onChange={() => onChange(option)}
                 className={styles.radioInput}
               />
               {option}

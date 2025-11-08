@@ -3,10 +3,7 @@
   background: white;
   border-right: 1px solid #e5e7eb;
   padding: 1.5rem;
-  height: 100vh;
-  overflow-y: auto; 
   z-index: 30;
-  -webkit-overflow-scrolling: touch; 
 }
 
 .header {
@@ -100,6 +97,32 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+@media (max-width: 900px) {
+  .expandButton {
+    position: fixed;
+    top: 50%;
+    left: 1rem; /* small gap from page edge */
+    transform: translateY(-50%);
+    z-index: 100; /* above cards */
+    background: white;
+    padding: 0.75rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  }
+
+  .collapsedOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: white;
+    z-index: 110; /* above cards and expand button */
+    padding: 1.5rem;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+    overflow-y: auto;
+  }
 }
 
 

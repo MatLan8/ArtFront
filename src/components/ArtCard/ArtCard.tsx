@@ -15,6 +15,9 @@ export interface Artwork {
   style: string;
   material: string;
   technique: string;
+  colorPalette: string;
+  artType: string;
+  period: string;
 }
 
 interface ArtCardProps {

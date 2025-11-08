@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import ArtCardHolder from "../../components/ArtCardHolder/ArtCardHolder";
+import { useState, useEffect } from "react";
 import FilterPanel from "../../components/FilterPanel/FilterPanel";
+import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
 import type { Artwork } from "../../components/ArtCard/ArtCard";
 import styles from "./Gallery.module.css";
 
@@ -17,6 +17,9 @@ const artworks: Artwork[] = [
     style: "Abstract",
     material: "Acrylic on Canvas",
     technique: "Layered Brushwork",
+    colorPalette: "Cool",
+    artType: "Painting",
+    period: "2020s"
   },
   {
     id: 2,
@@ -30,6 +33,9 @@ const artworks: Artwork[] = [
     style: "Contemporary",
     material: "Oil on Canvas",
     technique: "Impasto",
+    colorPalette: "Vibrant",
+    artType: "Painting",
+    period: "2020s"
   },
   {
     id: 3,
@@ -43,6 +49,9 @@ const artworks: Artwork[] = [
     style: "Geometric Abstract",
     material: "Mixed Media",
     technique: "Acrylic on Canvas",
+    colorPalette: "Monochrome",
+    artType: "Painting",
+    period: "2010s"
   },
   {
     id: 4,
@@ -56,6 +65,9 @@ const artworks: Artwork[] = [
     style: "Minimalist",
     material: "Acrylic on Linen",
     technique: "Wash Technique",
+    colorPalette: "Pastel",
+    artType: "Painting",
+    period: "2020s"
   },
   {
     id: 5,
@@ -69,6 +81,9 @@ const artworks: Artwork[] = [
     style: "Industrial Abstract",
     material: "Acrylic on Canvas",
     technique: "Texture Building",
+    colorPalette: "Warm",
+    artType: "Painting",
+    period: "2010s"
   },
   {
     id: 6,
@@ -82,8 +97,76 @@ const artworks: Artwork[] = [
     style: "Contemporary Landscape",
     material: "Oil on Canvas",
     technique: "Glazing",
+    colorPalette: "Warm",
+    artType: "Painting",
+    period: "2020s"
+  },
+  {
+    id: 7,
+    title: "Silent Forest",
+    artist: "Liam Carter",
+    description: "A moody forest scene with misty light.",
+    creationDate: new Date("2023-11-12"),
+    price: 3800,
+    dimensions: "40 x 30 in",
+    imageUrl: "https://images.saatchiart.com/saatchi/385897/art/5429511/4499323-HSC00001-7.jpg",
+    style: "Minimalist",
+    material: "Watercolor",
+    technique: "Wash Technique",
+    colorPalette: "Cool",
+    artType: "Painting",
+    period: "2020s"
+  },
+  {
+    id: 8,
+    title: "Neon Streets",
+    artist: "Hana Kim",
+    description: "Urban night scene in neon lights.",
+    creationDate: new Date("2023-10-01"),
+    price: 4900,
+    dimensions: "24 x 36 in",
+    imageUrl: "https://images.saatchiart.com/saatchi/9021/art/10277523/9340147-CGQOAKTO-7.jpg",
+    style: "Contemporary",
+    material: "Mixed Media",
+    technique: "Collage",
+    colorPalette: "Vibrant",
+    artType: "Painting",
+    period: "2010s"
+  },
+  {
+    id: 9,
+    title: "Golden Horizon",
+    artist: "Elise Martin",
+    description: "Sunset over minimalist hills.",
+    creationDate: new Date("2024-01-05"),
+    price: 5200,
+    dimensions: "50 x 30 in",
+    imageUrl: "https://images.saatchiart.com/saatchi/878841/art/10936021/9998431-SRKLTNYH-7.jpg",
+    style: "Minimalist",
+    material: "Oil on Canvas",
+    technique: "Glazing",
+    colorPalette: "Warm",
+    artType: "Painting",
+    period: "2020s"
+  },
+  {
+    id: 10,
+    title: "Digital Dreams",
+    artist: "Kevin Liu",
+    description: "Futuristic digital landscape.",
+    creationDate: new Date("2024-03-01"),
+    price: 4100,
+    dimensions: "30 x 20 in",
+    imageUrl: "https://images.saatchiart.com/saatchi/403549/art/11828501/10890741-UHTFOJRA-7.jpg",
+    style: "Modern",
+    material: "Digital",
+    technique: "Digital",
+    colorPalette: "Vibrant",
+    artType: "Digital Art",
+    period: "2020s"
   }
 ];
+
 
 const filterOptions = {
   styles: ["Abstract", "Contemporary", "Minimalist", "Modern", "Traditional"],
@@ -94,53 +177,78 @@ const filterOptions = {
   periods: ["2020s", "2010s", "2000s", "1990s", "Pre-1990"]
 };
 
-const SIDEBAR_WIDTH = 280;       // px, same as your sidebar CSS
-const MIN_CONTENT_WIDTH = 760;   // minimal space you want for cards area (tweak if needed)
+const keyMap: Record<string, keyof Artwork> = {
+  styles: "style",
+  materials: "material",
+  techniques: "technique",
+  colorPalettes: "colorPalette",
+  artTypes: "artType",
+  periods: "period"
+};
 
 export default function Gallery() {
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string | null>>({});
-  const [sidebarFixed, setSidebarFixed] = useState(true);
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  const [isMobile, setIsMobile] = useState(false);
+  const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
 
+  // Track mobile size
   useEffect(() => {
-    function updateLayout() {
-      const avail = window.innerWidth - SIDEBAR_WIDTH;
-      setSidebarFixed(avail >= MIN_CONTENT_WIDTH);
-    }
-
-    updateLayout();
-    window.addEventListener("resize", updateLayout);
-    return () => window.removeEventListener("resize", updateLayout);
+    const handleResize = () => setIsMobile(window.innerWidth <= 900);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleFilterChange = (filterType: string, value: string | null) => {
+  // Handle multi-select filter changes
+  function handleFilterChange(filterKey: string, values: string[]) {
     setSelectedFilters(prev => {
       const next = { ...prev };
-      if (value == null) delete next[filterType];
-      else next[filterType] = value;
+      if (!values || values.length === 0) delete next[filterKey];
+      else next[filterKey] = values;
       return next;
     });
-  };
+  }
 
-  // Filter artworks
+  // Filter artworks based on selected filters
   const filteredArtworks: Artwork[] = artworks.filter(artwork => {
-    return Object.entries(selectedFilters).every(([key, value]) => {
-      if (!value) return true;
-      return (artwork as any)[key]?.toString() === value;
+    return Object.entries(selectedFilters).every(([filterKey, values]) => {
+      const artworkProp = keyMap[filterKey];
+      if (!artworkProp) return true;
+      const artworkValue = (artwork as any)[artworkProp];
+      return values.includes(artworkValue);
     });
   });
 
   return (
     <div className={styles.galleryLayout}>
-      <div className={sidebarFixed ? styles.sidebarFixedWrapper : styles.sidebarInlineWrapper}>
+      {/* Show expand button only on mobile when collapsed */}
+      {isMobile && isFilterCollapsed && (
+        <button
+          className={styles.expandButton}
+          onClick={() => setIsFilterCollapsed(false)}
+        >
+          Show Filters
+        </button>
+      )}
+
+      {/* Filter Panel */}
+      {(!isMobile || !isFilterCollapsed) && (
         <FilterPanel
           options={filterOptions}
           selectedFilters={selectedFilters}
           onFilterChange={handleFilterChange}
+          isMobile={isMobile}
+          onClose={() => setIsFilterCollapsed(true)}
         />
-      </div>
+      )}
 
-      <main className={sidebarFixed ? `${styles.mainContent} ${styles.shifted}` : styles.mainContent}>
-        <ArtCardHolder artworks={filteredArtworks} />
+      {/* Art Cards */}
+      <main className={styles.mainContent}>
+        <ArtCardHolder
+          artworks={filteredArtworks}
+          onAddToCart={(art) => console.log("Add to cart:", art.title)}
+          onToggleLike={(art) => console.log("Toggle like:", art.title)}
+        />
       </main>
     </div>
   );
