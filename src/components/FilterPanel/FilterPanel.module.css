@@ -1,0 +1,129 @@
+.filterPanel {
+  width: 280px;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  z-index: 30;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding-bottom: 1rem;
+  z-index: 1;
+}
+
+.header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.clearButton {
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.clearButton:hover {
+  background: #f3f4f6;
+}
+
+.collapseButton {
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  color: #6b7280;
+}
+
+.collapseButton:hover {
+  background: #f3f4f6;
+}
+
+.filterSection {
+  margin-bottom: 1rem;
+}
+
+
+.filterSection:last-child {
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  color: #374151;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4b5563;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.radioInput {
+  cursor: pointer;
+}
+
+.expandButton {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0.75rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+@media (max-width: 900px) {
+  .expandButton {
+    position: fixed;
+    top: 50%;
+    left: 1rem; /* small gap from page edge */
+    transform: translateY(-50%);
+    z-index: 100; /* above cards */
+    background: white;
+    padding: 0.75rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  }
+
+  .collapsedOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: white;
+    z-index: 110; /* above cards and expand button */
+    padding: 1.5rem;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+    overflow-y: auto;
+  }
+}
+
+
+

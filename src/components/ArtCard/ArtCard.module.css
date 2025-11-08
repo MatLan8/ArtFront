@@ -1,0 +1,55 @@
+.container {
+  max-width: 500px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+}
+.image {
+  width: 100%;
+  display: block;
+  max-width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.price {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-weight: 600;
+}
+.title {
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+}
+.artist,
+.dims,
+.meta {
+  font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+}
+
+.btn {
+  display: inline-flex;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn:hover {
+  color: rgb(171, 22, 22);
+}
