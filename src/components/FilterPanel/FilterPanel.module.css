@@ -3,15 +3,18 @@
   background: white;
   border-right: 1px solid #e5e7eb;
   padding: 1.5rem;
-  overflow-y: auto;
+  height: 100vh;
+  overflow-y: auto; 
   z-index: 30;
+  -webkit-overflow-scrolling: touch; 
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  position: sticky;
+  top: 0;
+  background: white;
+  padding-bottom: 1rem;
+  z-index: 1;
 }
 
 .header h2 {
@@ -47,6 +50,11 @@
 
 .filterSection {
   margin-bottom: 1rem;
+}
+
+
+.filterSection:last-child {
+  margin-bottom: 2rem;
 }
 
 .sectionHeader {

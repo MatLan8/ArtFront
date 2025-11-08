@@ -1,25 +1,15 @@
-.container {
-  width: 100%;          
-  max-width: 100%;        
+.container {          
+  max-width: 500px;        
   box-sizing: border-box;
-  background: white;
   border-radius: 2px;
   overflow: hidden;
 }
 
 
-.alignRight {
-  max-width: 320px; 
-  margin-left: auto; 
-}
-
-
 .imageWrapper { position: relative; width: 100%; }
 .image {
-  width: 100%;
-  height: auto;           
+  width: 100%;        
   display: block;
-  object-fit: cover;
   max-width: 100%;
 }
 
