@@ -5,6 +5,10 @@ import NavBar from "./components/NavBar/NavBar";
 import AddArt from "./pages/AddArt/AddArt";
 import EditArt from "./pages/EditArt/EditArt";
 import SellerView from "./pages/SellerView/SellerView";
+import Profile from "./pages/Profile/Profile";
+import LikedArt from "./pages/Profile/LikedArt";
+import EditProfile from "./pages/Profile/EditProfile";
+import OrderHistory from "./pages/Profile/OrderHistory";
 
 function App() {
   return (
@@ -17,6 +21,10 @@ function App() {
           <Route path="/Seller-view" element={<SellerView />} />
           <Route path="/Add-art" element={<AddArt />} />
           <Route path="/Edit-art" element={<EditArt />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route path="/Profile/LikedArt" element={<LikedArt />} />
+          <Route path="/Profile/EditProfile" element={<EditProfile />} />
+          <Route path="/Profile/OrderHistory" element={<OrderHistory />} />
         </Routes>
       </main>
     </div>
