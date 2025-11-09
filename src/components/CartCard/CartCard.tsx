@@ -14,10 +14,20 @@ function CartCard({ artwork }: CartCardProps) {
       </div>
       <div className={style.details}>
         <span>{artwork.title}</span>
+        <span>{artwork.description}</span>
+        <span>{artwork.style}</span>
+        <span>{artwork.technique}</span>
+        <span>{artwork.creationDate.toDateString()}</span>
+      </div>
+      <div className={style.details}>
         <span>{artwork.artist}</span>
         <span>{artwork.material}</span>
+        <span></span>
         <span>{artwork.dimensions}</span>
         <span>{artwork.price} €</span>
+      </div>
+      <div className={style.removeButton}>
+        <button>Edit</button>
       </div>
     </div>
   );

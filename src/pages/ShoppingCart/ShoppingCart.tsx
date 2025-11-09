@@ -13,11 +13,6 @@ function ShoppingCart() {
         <CartCard artwork={artworks[1]} />
         <CartCard artwork={artworks[2]} />
       </div>
-      <div className={styles.PriceSummary}>
-        <p className={styles.title}>Order summary</p>
-        <div className={styles.divider} />
-        <p>balls</p>
-      </div>
     </div>
   );
 }

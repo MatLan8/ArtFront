@@ -10,4 +10,7 @@ export type Artwork = {
   style: string;
   material: string;
   technique: string;
+  colorPalette: string;
+  artType: string;
+  period: string;
 };
