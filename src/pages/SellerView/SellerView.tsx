@@ -10,6 +10,10 @@ function SellerView() {
     navigate("/Add-art");
   };
 
+  const handleReport = () => {
+    navigate("/Profits-report");
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.list}>
@@ -20,6 +24,9 @@ function SellerView() {
         <SellerCard artwork={artworks[2]} />
         <div className={styles.addButton}>
           <button onClick={handleAdd}>Add Art</button>
+        </div>
+        <div className={styles.addButton}>
+          <button onClick={handleReport}>Generate Profits Report</button>
         </div>
       </div>
     </div>
