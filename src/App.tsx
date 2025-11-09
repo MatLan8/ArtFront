@@ -20,9 +20,12 @@ function App() {
           <Route path="/Seller-view" element={<SellerView />} />
           <Route path="/Add-art" element={<AddArt />} />
           <Route path="/Edit-art" element={<EditArt />} />
-          <Route path="/Cart" element={<ShoppingCart />} />
           <Route path="/Checkout" element={<Checkout />} />
+<<<<<<< HEAD
           <Route path="/Admin" element={<AdminPage />} />
+=======
+          <Route path="/Cart" element={<ShoppingCart />} />
+>>>>>>> main
         </Routes>
       </main>
     </div>
