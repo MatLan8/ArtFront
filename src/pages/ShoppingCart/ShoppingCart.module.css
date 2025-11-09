@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 .Container {
   display: flex;
   flex-direction: row;
@@ -45,9 +47,67 @@
   margin: 0px;
 }
 
+.text {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+}
+
 .divider {
   border: none; /* remove default border */
   height: 2px; /* thickness of the line */
   background-color: black; /* color of the line */
   margin: 10px 0; /* spacing around the line */
+}
+
+.input {
+  flex: 2;
+  padding: 8px 12px;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  color: black;
+  transition: border-color 0.2s ease;
+}
+
+.Promo {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.ApplyButton {
+  flex: 1;
+  background-color: black;
+  color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ApplyButton:hover {
+  background-color: #333333;
+}
+
+.CheckoutButton {
+  width: 100%;
+  background-color: green;
+  color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 12px 0;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: background-color 0.2s ease;
+}
+
+.CheckoutButton:hover {
+  background-color: #006400;
 }

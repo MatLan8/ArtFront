@@ -1,4 +1,5 @@
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
+import Checkout from "./pages/Checkout/Checkout";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<ShoppingCart />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </div>
     </>
