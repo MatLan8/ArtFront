@@ -1,4 +1,5 @@
-import SellerList from "./pages/SellerList/SellerList";
+import AddArt from "./pages/AddArt/AddArt";
+import EditArt from "./pages/EditArt/EditArt";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -6,7 +7,8 @@ function App() {
     <>
       <div>
         <Routes>
-          <Route path="/" element={<SellerList />} />
+          <Route path="/" element={<AddArt />} />
+          <Route path="/edit-art" element={<EditArt />} />
         </Routes>
       </div>
     </>
