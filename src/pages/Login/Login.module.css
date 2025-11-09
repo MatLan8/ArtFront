@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: auto;
+  margin: 100px auto;
+
+  background-color: var(--secondary);
+  padding: 30px;
+  border-radius: 10px;
+  gap: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.divider {
+  border: none; /* remove default border */
+  height: 2px; /* thickness of the line */
+  background-color: black; /* color of the line */
+  margin: 10px 0; /* spacing around the line */
+  width: 100%;
+}
+
+.Container input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 6px;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  color: black;
+  transition: border-color 0.2s ease;
+}
+
+.registerButton {
+  width: 100%;
+  background-color: black;
+  color: var(--primary);
+  border: black 1px solid;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 12px 0;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  transition: background-color 0.5s ease;
+}
+
+.registerButton:hover {
+  background-color: #333333;
+}
