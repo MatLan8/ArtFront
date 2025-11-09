@@ -114,18 +114,19 @@
   transform: scale(1.03);
 }
 
-
-
 /* Featured Section */
-.featured {
+.featuredWrapper {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  max-width: 1200px;
-  margin: 3rem auto;
-  text-align: center;
+  overflow-x: auto; 
 }
 
 .featured h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  align-items: center;
+  text-align: center;
 }
 
 /* Footer */
