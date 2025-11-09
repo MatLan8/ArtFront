@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.imgContainer {
+  flex: 0 0 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f2f2f2;
+}
+
+.imgContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.details1 {
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0px;
+  height: 150px;
+  padding-left: 20px;
+}
+
+.details2 {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0px;
+  height: 150px;
+  padding-left: 20px;
+}
+
+.removeButton {
+  flex: 2;
+  display: flex;
+  margin: auto;
+}
+
+.removeButton button {
+  background-color: var(--text);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  height: 50px;
+  margin-right: 25%;
+}
+
+.details1 span:first-child,
+.details2 span:first-child {
+  font-weight: 700;
+}
+
+.details1 span:nth-child(2),
+.details2 span:nth-child(2) {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.details1 span:nth-child(4),
+.details2 span:nth-child(4) {
+  margin-bottom: 8px;
+}
+
+.details1 span:last-child,
+.details2 span:last-child {
+  margin-top: auto;
+  font-weight: 700;
+}

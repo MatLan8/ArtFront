@@ -7,6 +7,7 @@ function NavBar() {
     <nav className={styles.nav}>
       <Link to="/">Home</Link>
       <Link to="/Gallery">Gallery</Link>
+      <Link to="/Seller-view">Manage Art</Link>
       <Link to="/Login">Login</Link>
       <Link to="/Register">Register</Link>
       <Link to="/ShoppingCart">
