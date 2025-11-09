@@ -1,4 +1,4 @@
-import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
+import SellerList from "./pages/SellerList/SellerList";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
     <>
       <div>
         <Routes>
-          <Route path="/" element={<ShoppingCart />} />
+          <Route path="/" element={<SellerList />} />
         </Routes>
       </div>
     </>

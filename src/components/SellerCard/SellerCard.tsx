@@ -1,11 +1,11 @@
 import type { Artwork } from "../../types/Artwork";
-import style from "./CartCard.module.css";
+import style from "./SellerCard.module.css";
 
-type CartCardProps = {
+type SellerCardProps = {
   artwork: Artwork;
 };
 
-function CartCard({ artwork }: CartCardProps) {
+function SellerCard({ artwork }: SellerCardProps) {
   return (
     <div className={style.container}>
       <div className={style.imgContainer}>
@@ -32,4 +32,4 @@ function CartCard({ artwork }: CartCardProps) {
   );
 }
 
-export default CartCard;
+export default SellerCard;
