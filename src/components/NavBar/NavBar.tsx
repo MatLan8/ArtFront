@@ -8,9 +8,10 @@ function NavBar() {
       <Link to="/">Home</Link>
       <Link to="/Gallery">Gallery</Link>
       <Link to="/Seller-view">Manage Art</Link>
+      <Link to="/Admin">Admin</Link>
       <Link to="/Login">Login</Link>
       <Link to="/Register">Register</Link>
-      <Link to="/Profile">Profile</Link>
+      <Link to ="Profile">Profile</Link>
       <Link to="/Cart">
         <ShoppingBag size={20} />
       </Link>
