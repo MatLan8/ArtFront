@@ -3,7 +3,7 @@ import FilterPanel from "../../components/FilterPanel/FilterPanel";
 import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
 import type { Artwork } from "../../components/ArtCard/ArtCard";
 import styles from "./Gallery.module.css";
-
+import { useLocation, useSearchParams } from "react-router-dom";
 const artworks: Artwork[] = [
   {
     id: 1,
@@ -177,6 +177,7 @@ const filterOptions = {
   periods: ["2020s", "2010s", "2000s", "1990s", "Pre-1990"]
 };
 
+// Map filter panel keys to artwork properties
 const keyMap: Record<string, keyof Artwork> = {
   styles: "style",
   materials: "material",
@@ -186,12 +187,25 @@ const keyMap: Record<string, keyof Artwork> = {
   periods: "period"
 };
 
+
 export default function Gallery() {
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
 
-  // Track mobile size
+  // Apply filters from query params
+  useEffect(() => {
+    const paramsObj: Record<string, string[]> = {};
+    searchParams.forEach((value, key) => {
+      if (!paramsObj[key]) paramsObj[key] = [];
+      paramsObj[key].push(value);
+    });
+    setSelectedFilters(paramsObj);
+  }, [location.search]);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 900);
     handleResize();
@@ -199,7 +213,6 @@ export default function Gallery() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Handle multi-select filter changes
   function handleFilterChange(filterKey: string, values: string[]) {
     setSelectedFilters(prev => {
       const next = { ...prev };
@@ -209,19 +222,17 @@ export default function Gallery() {
     });
   }
 
-  // Filter artworks based on selected filters
-  const filteredArtworks: Artwork[] = artworks.filter(artwork => {
-    return Object.entries(selectedFilters).every(([filterKey, values]) => {
+  const filteredArtworks: Artwork[] = artworks.filter(artwork =>
+    Object.entries(selectedFilters).every(([filterKey, values]) => {
       const artworkProp = keyMap[filterKey];
       if (!artworkProp) return true;
       const artworkValue = (artwork as any)[artworkProp];
-      return values.includes(artworkValue);
-    });
-  });
+      return artworkValue && values.includes(artworkValue);
+    })
+  );
 
   return (
     <div className={styles.galleryLayout}>
-      {/* Show expand button only on mobile when collapsed */}
       {isMobile && isFilterCollapsed && (
         <button
           className={styles.expandButton}
@@ -231,7 +242,6 @@ export default function Gallery() {
         </button>
       )}
 
-      {/* Filter Panel */}
       {(!isMobile || !isFilterCollapsed) && (
         <FilterPanel
           options={filterOptions}
@@ -242,7 +252,6 @@ export default function Gallery() {
         />
       )}
 
-      {/* Art Cards */}
       <main className={styles.mainContent}>
         <ArtCardHolder
           artworks={filteredArtworks}
