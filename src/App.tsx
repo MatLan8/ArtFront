@@ -7,6 +7,7 @@ import EditArt from "./pages/EditArt/EditArt";
 import SellerView from "./pages/SellerView/SellerView";
 import Checkout from "./pages/Checkout/Checkout";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
+import Register from "./pages/Register/Register";
 import Profile from "./pages/Profile/Profile";
 import LikedArt from "./pages/Profile/LikedArt";
 import EditProfile from "./pages/Profile/EditProfile";
@@ -29,7 +30,7 @@ function App() {
           <Route path="/Profile/OrderHistory" element={<OrderHistory />} />
           <Route path="/Checkout" element={<Checkout />} />
           <Route path="/Cart" element={<ShoppingCart />} />
-
+          <Route path="/Register" element={<Register />} />
         </Routes>
       </main>
     </div>
