@@ -7,6 +7,7 @@ import EditArt from "./pages/EditArt/EditArt";
 import SellerView from "./pages/SellerView/SellerView";
 import Checkout from "./pages/Checkout/Checkout";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
+import Register from "./pages/Register/Register";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/Edit-art" element={<EditArt />} />
           <Route path="/Checkout" element={<Checkout />} />
           <Route path="/Cart" element={<ShoppingCart />} />
+          <Route path="/Register" element={<Register />} />
         </Routes>
       </main>
     </div>
