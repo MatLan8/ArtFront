@@ -1,4 +1,3 @@
-import React from "react";
 import type { Artwork } from "../../types/Artwork";
 import style from "./CartCard.module.css";
 
@@ -12,14 +11,14 @@ function CartCard({ artwork }: CartCardProps) {
       <div className={style.imgContainer}>
         <img src={artwork.imageUrl} alt={artwork.title} />
       </div>
-      <div className={style.details}>
+      <div className={style.details1}>
         <span>{artwork.title}</span>
         <span>{artwork.description}</span>
         <span>{artwork.style}</span>
         <span>{artwork.technique}</span>
         <span>{artwork.creationDate.toDateString()}</span>
       </div>
-      <div className={style.details}>
+      <div className={style.details2}>
         <span>{artwork.artist}</span>
         <span>{artwork.material}</span>
         <span></span>

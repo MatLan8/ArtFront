@@ -12,6 +12,9 @@ function ShoppingCart() {
         <CartCard artwork={artworks[0]} />
         <CartCard artwork={artworks[1]} />
         <CartCard artwork={artworks[2]} />
+        <div className={styles.addButton}>
+          <button>Add Art</button>
+        </div>
       </div>
     </div>
   );
