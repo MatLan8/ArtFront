@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ShoppingCart.module.css";
+import style from "./ShoppingCart.module.css";
 import { artworks } from "../../MockUpData/ArtworkMock";
 import CartCard from "../../components/CartCard/CartCard";
 import { useNavigate } from "react-router-dom";
@@ -10,30 +10,30 @@ function ShoppingCart() {
     navigate("/checkout"); // path to your checkout page
   };
   return (
-    <div className={styles.Container}>
-      <div className={styles.Cart}>
-        <p className={styles.title}>Cart</p>
-        <div className={styles.divider} />
+    <div className={style.Container}>
+      <div className={style.Cart}>
+        <p className={style.title}>Cart</p>
+        <div className={style.divider} />
         <CartCard artwork={artworks[0]} />
         <CartCard artwork={artworks[1]} />
         <CartCard artwork={artworks[2]} />
       </div>
-      <div className={styles.PriceSummary}>
-        <p className={styles.title}>Order summary</p>
-        <div className={styles.divider} />
-        <span className={styles.text}>Estimated total: 152464 €</span>
-        <span className={styles.text} style={{ fontSize: "16px" }}>
+      <div className={style.PriceSummary}>
+        <p className={style.title}>Order summary</p>
+        <div className={style.divider} />
+        <span className={style.text}>Estimated total: 152464 €</span>
+        <span className={style.text} style={{ fontSize: "16px" }}>
           APPLY PROMO CODE
         </span>
-        <div className={styles.Promo}>
+        <div className={style.Promo}>
           <input
             type="text"
             placeholder="Enter promo code"
-            className={styles.input}
+            className={style.input}
           />
-          <button className={styles.ApplyButton}>Apply</button>
+          <button className={style.ApplyButton}>Apply</button>
         </div>
-        <button className={styles.CheckoutButton} onClick={handleCheckout}>
+        <button className={style.CheckoutButton} onClick={handleCheckout}>
           Checkout
         </button>
       </div>

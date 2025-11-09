@@ -80,18 +80,23 @@
 
 .ApplyButton {
   flex: 1;
-  background-color: black;
-  color: var(--primary);
-  border: none;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: white;
+  border: 1px solid black;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  padding: 20;
+  border-radius: 6px;
 }
 
 .ApplyButton:hover {
-  background-color: #333333;
+  background-color: black;
+  color: var(--primary);
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .CheckoutButton {

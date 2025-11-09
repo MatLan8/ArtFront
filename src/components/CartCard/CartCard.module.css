@@ -30,6 +30,8 @@
 
 .details {
   padding-left: 20px;
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -37,20 +39,28 @@
   height: 150px;
 }
 
-.details span:first-child {
-  font-weight: 700;
-}
-
-.details span:nth-child(2) {
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-
-.details span:nth-child(4) {
-  margin-bottom: 8px;
-}
-
-.details span:last-child {
+.quantityPriceContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-top: auto;
-  font-weight: 700;
+  font-weight: 500;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+
+.deleteIcon {
+  cursor: pointer;
+  fill: white;
+  transition: fill 0.5s ease;
+}
+
+.deleteIcon:hover {
+  fill: gray;
 }
