@@ -32,7 +32,7 @@ function SellerCard({ artwork }: SellerCardProps) {
         <span>{artwork.dimensions}</span>
         <span>{artwork.price} €</span>
       </div>
-      <div className={style.removeButton}>
+      <div className={style.editButton}>
         <button onClick={handleEdit}>Edit</button>
       </div>
     </div>

@@ -49,13 +49,13 @@
   padding-left: 20px;
 }
 
-.removeButton {
+.editButton {
   flex: 2;
   display: flex;
   margin: auto;
 }
 
-.removeButton button {
+.editButton button {
   background-color: var(--text);
   color: white;
   border: none;
