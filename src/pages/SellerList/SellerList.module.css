@@ -48,10 +48,10 @@
 }
 
 .divider {
-  border: none; /* remove default border */
-  height: 2px; /* thickness of the line */
-  background-color: black; /* color of the line */
-  margin: 10px 0; /* spacing around the line */
+  border: none;
+  height: 2px;
+  background-color: black;
+  margin: 10px 0;
 }
 
 .addButton {
