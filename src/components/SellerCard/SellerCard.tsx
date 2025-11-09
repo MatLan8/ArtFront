@@ -1,11 +1,18 @@
 import type { Artwork } from "../../types/Artwork";
 import style from "./SellerCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 type SellerCardProps = {
   artwork: Artwork;
 };
 
 function SellerCard({ artwork }: SellerCardProps) {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate("/edit-art", { state: { artwork } });
+  };
+
   return (
     <div className={style.container}>
       <div className={style.imgContainer}>
@@ -26,7 +33,7 @@ function SellerCard({ artwork }: SellerCardProps) {
         <span>{artwork.price} €</span>
       </div>
       <div className={style.removeButton}>
-        <button>Edit</button>
+        <button onClick={handleEdit}>Edit</button>
       </div>
     </div>
   );
