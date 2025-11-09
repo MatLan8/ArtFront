@@ -1,6 +1,6 @@
 .form {
-  max-width: 900px; /* increased from 600px */
-  width: 90%; /* makes it responsive */
+  max-width: 900px;
+  width: 90%;
   margin: 2rem auto;
   padding: 2rem;
   border: 1px solid #ddd;
@@ -56,7 +56,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* delete button style */
 .deleteButton {
   display: block;
   width: 100%;
