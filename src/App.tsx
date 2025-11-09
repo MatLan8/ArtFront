@@ -12,6 +12,7 @@ import Profile from "./pages/Profile/Profile";
 import LikedArt from "./pages/Profile/LikedArt";
 import EditProfile from "./pages/Profile/EditProfile";
 import OrderHistory from "./pages/Profile/OrderHistory";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/Checkout" element={<Checkout />} />
           <Route path="/Cart" element={<ShoppingCart />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/Login" element={<Login />} />
         </Routes>
       </main>
     </div>
