@@ -5,11 +5,13 @@ import styles from "./ArtForm.module.css";
 interface ArtFormProps {
   initialData?: Artwork | null;
   onSubmit?: (data: Artwork) => void;
+  onDelete?: (data: Artwork) => void; // optional delete handler
 }
 
 export default function ArtForm({
   initialData = null,
   onSubmit,
+  onDelete,
 }: ArtFormProps) {
   const emptyArt: Artwork = {
     title: "",
@@ -52,6 +54,10 @@ export default function ArtForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit?.(formData);
+  };
+
+  const handleDelete = () => {
+    if (onDelete) onDelete(formData);
   };
 
   const formatDate = (date: Date) => date.toISOString().split("T")[0];
@@ -193,6 +199,16 @@ export default function ArtForm({
       <button className={styles.button} type="submit">
         {initialData ? "Update Artwork" : "Add Artwork"}
       </button>
+
+      {initialData && (
+        <button
+          type="button"
+          className={styles.deleteButton}
+          onClick={handleDelete}
+        >
+          Delete Artwork
+        </button>
+      )}
     </form>
   );
 }
