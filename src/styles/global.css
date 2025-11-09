@@ -9,3 +9,15 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Hide scrollbars globally but keep scrolling enabled */
+html,
+body {
+  overflow-y: scroll; /* ensures layout doesn't shift */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  display: none;
+}

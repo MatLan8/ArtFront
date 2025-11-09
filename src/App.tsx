@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <NavBar />
-      <main style={{ paddingTop: "80px" }}>
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Gallery" element={<Gallery />} />
