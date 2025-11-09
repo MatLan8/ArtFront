@@ -10,7 +10,7 @@ function NavBar() {
       <Link to="/Seller-view">Manage Art</Link>
       <Link to="/Login">Login</Link>
       <Link to="/Register">Register</Link>
-      <Link to="/ShoppingCart">
+      <Link to="/Cart">
         <ShoppingBag size={20} />
       </Link>
     </nav>
