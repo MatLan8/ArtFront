@@ -6,6 +6,7 @@ import AddArt from "./pages/AddArt/AddArt";
 import EditArt from "./pages/EditArt/EditArt";
 import SellerView from "./pages/SellerView/SellerView";
 
+
 function App() {
   return (
     <div>
