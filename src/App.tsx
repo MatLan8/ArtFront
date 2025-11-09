@@ -5,6 +5,8 @@ import NavBar from "./components/NavBar/NavBar";
 import AddArt from "./pages/AddArt/AddArt";
 import EditArt from "./pages/EditArt/EditArt";
 import SellerView from "./pages/SellerView/SellerView";
+import Checkout from "./pages/Checkout/Checkout";
+import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
 import Profile from "./pages/Profile/Profile";
 import LikedArt from "./pages/Profile/LikedArt";
 import EditProfile from "./pages/Profile/EditProfile";
@@ -25,6 +27,9 @@ function App() {
           <Route path="/Profile/LikedArt" element={<LikedArt />} />
           <Route path="/Profile/EditProfile" element={<EditProfile />} />
           <Route path="/Profile/OrderHistory" element={<OrderHistory />} />
+          <Route path="/Checkout" element={<Checkout />} />
+          <Route path="/Cart" element={<ShoppingCart />} />
+
         </Routes>
       </main>
     </div>
