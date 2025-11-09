@@ -1,8 +1,14 @@
 import styles from "./SellerList.module.css";
 import { artworks } from "../../MockUpData/ArtworkMock";
 import SellerCard from "../../components/SellerCard/SellerCard";
+import { useNavigate } from "react-router-dom";
 
 function SellerList() {
+  const navigate = useNavigate();
+
+  const handleAdd = () => {
+    navigate("/add-art");
+  };
   return (
     <div className={styles.Container}>
       <div className={styles.List}>
@@ -12,7 +18,7 @@ function SellerList() {
         <SellerCard artwork={artworks[1]} />
         <SellerCard artwork={artworks[2]} />
         <div className={styles.addButton}>
-          <button>Add Art</button>
+          <button onClick={handleAdd}>Edit</button>
         </div>
       </div>
     </div>
