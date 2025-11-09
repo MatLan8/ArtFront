@@ -96,12 +96,14 @@ export default function Home() {
 
       <section className={styles.featured}>
         <h2>Featured Artworks</h2>
-        <ArtCardHolder
-          artworks={featuredArtworks}
-          onAddToCart={(a) => console.log("Add to cart:", a.title)}
-          onToggleLike={(a) => console.log("Like:", a.title)}
-        />
-      </section>
+        <div className={styles.featuredWrapper}>
+            <ArtCardHolder
+            artworks={featuredArtworks}
+            onAddToCart={(a) => console.log("Add to cart:", a.title)}
+            onToggleLike={(a) => console.log("Like:", a.title)}
+            />
+        </div>
+        </section>
 
       <footer className={styles.footer}>
         <p>© 2025 ArtFront. Curated with passion.</p>
