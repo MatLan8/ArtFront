@@ -232,7 +232,13 @@ export default function Gallery() {
   );
 
   return (
+    <div>
+    {/* Heading on top of everything */}
+    <div className={styles.galleryHeading}>
+      Original Paintings for Sale
+    </div>
     <div className={styles.galleryLayout}>
+
       {isMobile && isFilterCollapsed && (
         <button
           className={styles.expandButton}
@@ -259,6 +265,7 @@ export default function Gallery() {
           onToggleLike={(art) => console.log("Toggle like:", art.title)}
         />
       </main>
+    </div>
     </div>
   );
 }
