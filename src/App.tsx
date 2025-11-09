@@ -8,6 +8,7 @@ import SellerView from "./pages/SellerView/SellerView";
 import Checkout from "./pages/Checkout/Checkout";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
 
+
 function App() {
   return (
     <div>
