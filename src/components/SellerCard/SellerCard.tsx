@@ -26,7 +26,7 @@ function SellerCard({ artwork }: SellerCardProps) {
         <span>{artwork.description}</span>
         <span>{Style[artwork.style as keyof typeof Style]}</span>
         <span>{Technique[artwork.technique as keyof typeof Technique]}</span>
-        <span>{artwork.creationDate.toDateString()}</span>
+        <span>{new Date(artwork.createdAt).toLocaleDateString("lt-LT")}</span>
       </div>
       <div className={style.details2}>
         <span>{artwork.author}</span>
