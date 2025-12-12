@@ -14,6 +14,7 @@ import LikedArt from "./pages/Profile/LikedArt";
 import EditProfile from "./pages/Profile/EditProfile";
 import OrderHistory from "./pages/Profile/OrderHistory";
 import Login from "./pages/Login/Login";
+import ProfitsReport from "./pages/profitsReport/profitsReport";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/Seller-view" element={<SellerView />} />
           <Route path="/Add-art" element={<AddArt />} />
           <Route path="/Edit-art" element={<EditArt />} />
+          <Route path="/Profits-report" element={<ProfitsReport />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Profile/LikedArt" element={<LikedArt />} />
           <Route path="/Profile/EditProfile" element={<EditProfile />} />
@@ -35,7 +37,6 @@ function App() {
           <Route path="/Cart" element={<ShoppingCart />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Login" element={<Login />} />
-
         </Routes>
       </main>
     </div>
