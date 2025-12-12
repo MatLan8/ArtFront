@@ -5,6 +5,7 @@ export type Artwork = {
   description: string;
   price: number;
   dimensions: string;
+  creationDate: Date;
   imageUrl: string;
   style: number;
   material: number;
