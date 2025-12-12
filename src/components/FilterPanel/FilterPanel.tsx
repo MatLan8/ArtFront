@@ -3,12 +3,12 @@ import styles from './FilterPanel.module.css';
 import { useState, useEffect } from 'react';
 
 export interface FilterOptions {
-  styles: string[];
-  materials: string[];
-  techniques: string[];
-  colorPalettes: string[];
-  artTypes: string[];
-  periods: string[];
+  style: string[];
+  material: string[];
+  technique: string[];
+  colorPalette: string[];
+  artType: string[];
+  period: string[];
 }
 
 interface FilterPanelProps {
@@ -36,12 +36,12 @@ export default function FilterPanel({
   onClose
 }: FilterPanelProps) {
   const [expandedSections, setExpandedSections] = useState({
-    styles: true,
-    materials: true,
-    techniques: true,
-    colorPalettes: true,
-    artTypes: true,
-    periods: true
+    style: true,
+    material: true,
+    technique: true,
+    colorPalette: true,
+    artType: true,
+    period: true
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -88,91 +88,91 @@ export default function FilterPanel({
         {/* Filter sections */}
         <FilterSection
           title="Style"
-          expanded={expandedSections.styles}
-          onToggle={() => toggleSection('styles')}
-          selected={selectedFilters.styles || []}
-          options={options.styles}
+          expanded={expandedSections.style}
+          onToggle={() => toggleSection('style')}
+          selected={selectedFilters.style || []}
+          options={options.style}
           onChange={value => {
-            const current = selectedFilters.styles || [];
+            const current = selectedFilters.style || [];
             const next = current.includes(value)
               ? current.filter(v => v !== value)
               : [...current, value];
-            onFilterChange('styles', next);
+            onFilterChange('style', next);
           }}
         />
 
         <FilterSection
           title="Material"
-          expanded={expandedSections.materials}
-          onToggle={() => toggleSection('materials')}
-          selected={selectedFilters.materials || []}
-          options={options.materials}
+          expanded={expandedSections.material}
+          onToggle={() => toggleSection('material')}
+          selected={selectedFilters.material || []}
+          options={options.material}
           onChange={value => {
-            const current = selectedFilters.materials || [];
+            const current = selectedFilters.material || [];
             const next = current.includes(value)
               ? current.filter(v => v !== value)
               : [...current, value];
-            onFilterChange('materials', next);
+            onFilterChange('material', next);
           }}
         />
 
         <FilterSection
           title="Technique"
-          expanded={expandedSections.techniques}
-          onToggle={() => toggleSection('techniques')}
-          selected={selectedFilters.techniques || []}
-          options={options.techniques}
+          expanded={expandedSections.technique}
+          onToggle={() => toggleSection('technique')}
+          selected={selectedFilters.technique || []}
+          options={options.technique}
           onChange={value => {
-            const current = selectedFilters.techniques || [];
+            const current = selectedFilters.technique || [];
             const next = current.includes(value)
               ? current.filter(v => v !== value)
               : [...current, value];
-            onFilterChange('techniques', next);
+            onFilterChange('technique', next);
           }}
         />
 
         <FilterSection
           title="Color Palette"
-          expanded={expandedSections.colorPalettes}
-          onToggle={() => toggleSection('colorPalettes')}
-          selected={selectedFilters.colorPalettes || []}
-          options={options.colorPalettes}
+          expanded={expandedSections.colorPalette}
+          onToggle={() => toggleSection('colorPalette')}
+          selected={selectedFilters.colorPalette || []}
+          options={options.colorPalette}
           onChange={value => {
-            const current = selectedFilters.colorPalettes || [];
+            const current = selectedFilters.colorPalette || [];
             const next = current.includes(value)
               ? current.filter(v => v !== value)
               : [...current, value];
-            onFilterChange('colorPalettes', next);
+            onFilterChange('colorPalette', next);
           }}
         />
 
         <FilterSection
           title="Art Type"
-          expanded={expandedSections.artTypes}
-          onToggle={() => toggleSection('artTypes')}
-          selected={selectedFilters.artTypes || []}
-          options={options.artTypes}
+          expanded={expandedSections.artType}
+          onToggle={() => toggleSection('artType')}
+          selected={selectedFilters.artType || []}
+          options={options.artType}
           onChange={value => {
-            const current = selectedFilters.artTypes || [];
+            const current = selectedFilters.artType || [];
             const next = current.includes(value)
               ? current.filter(v => v !== value)
               : [...current, value];
-            onFilterChange('artTypes', next);
+            onFilterChange('artType', next);
           }}
         />
 
         <FilterSection
           title="Period"
-          expanded={expandedSections.periods}
-          onToggle={() => toggleSection('periods')}
-          selected={selectedFilters.periods || []}
-          options={options.periods}
+          expanded={expandedSections.period}
+          onToggle={() => toggleSection('period')}
+          selected={selectedFilters.period || []}
+          options={options.period}
           onChange={value => {
-            const current = selectedFilters.periods || [];
+            const current = selectedFilters.period || [];
             const next = current.includes(value)
               ? current.filter(v => v !== value)
               : [...current, value];
-            onFilterChange('periods', next);
+            onFilterChange('period', next);
           }}
         />
       </div>

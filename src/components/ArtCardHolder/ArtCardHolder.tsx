@@ -1,5 +1,5 @@
 import Masonry from 'react-masonry-css';
-import type { Artwork } from '../ArtCard/ArtCard';
+import type { Artwork } from "../../types/Artwork";
 import ArtCard from '../ArtCard/ArtCard';
 import styles from './ArtCardHolder.module.css';
 

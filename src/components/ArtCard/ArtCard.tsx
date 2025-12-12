@@ -1,24 +1,7 @@
 import { useState } from "react";
 import { Heart, ShoppingBag } from "lucide-react";
 import styles from "./ArtCard.module.css";
-
-
-export interface Artwork {
-  id?: number;
-  title: string;
-  artist: string;
-  description: string;
-  creationDate: Date;
-  price: number;
-  dimensions: string;
-  imageUrl: string;
-  style: string;
-  material: string;
-  technique: string;
-  colorPalette: string;
-  artType: string;
-  period: string;
-}
+import type { Artwork } from "../../types/Artwork";
 
 interface ArtCardProps {
   artwork: Artwork;
@@ -49,7 +32,7 @@ export default function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardP
       <div className={styles.imageWrapper}>
         <img
           src={artwork.imageUrl}
-          alt={`${artwork.title} — ${artwork.artist}`}
+          alt={`${artwork.name} — ${artwork.author}`}
           onError={handleImgError}
           className={styles.image}
         />
@@ -81,11 +64,11 @@ export default function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardP
 
       <div className={styles.content}>
         <div className={styles.title}>
-          {artwork.title}
+          {artwork.name}
         </div>
 
         <div className={styles.artist}>
-          {artwork.artist}
+          {artwork.author}
         </div>
 
         <div className={styles.dims}>
