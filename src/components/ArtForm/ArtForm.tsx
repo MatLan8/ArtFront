@@ -25,13 +25,14 @@ export default function ArtForm({
     description: "",
     price: 0,
     dimensions: "",
+    creationDate: new Date(),
     imageUrl: "",
-    style: 0,
-    material: 0,
-    technique: 0,
-    colorPalette: 0,
-    artType: 0,
-    period: 0,
+    style: -1,
+    material: -1,
+    technique: -1,
+    colorPalette: -1,
+    artType: -1,
+    period: -1,
   };
 
   const [formData, setFormData] = useState<Artwork>(initialData || emptyArt);
@@ -83,6 +84,7 @@ export default function ArtForm({
       if (
         value === "" ||
         value === 0 ||
+        value === -1 ||
         value === null ||
         value === undefined
       ) {
@@ -184,9 +186,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Style</option>
+          <option value="-1">Select Style</option>
           {Object.entries(Style).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -202,9 +204,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Material</option>
+          <option value="-1">Select Material</option>
           {Object.entries(Material).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -220,9 +222,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Technique</option>
+          <option value="-1">Select Technique</option>
           {Object.entries(Technique).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -238,9 +240,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Color Palette</option>
+          <option value="-1">Select Color Palette</option>
           {Object.entries(ColorPalette).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -256,9 +258,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Art Type</option>
+          <option value="-1">Select Art Type</option>
           {Object.entries(ArtType).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -274,9 +276,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Period</option>
+          <option value="-1">Select Period</option>
           {Object.entries(Period).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
