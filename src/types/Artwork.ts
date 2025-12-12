@@ -1,16 +1,15 @@
 export type Artwork = {
   id?: number;
-  title: string;
-  artist: string;
+  name: string;
+  author: string;
   description: string;
-  creationDate: Date;
   price: number;
   dimensions: string;
   imageUrl: string;
-  style: string;
-  material: string;
-  technique: string;
-  colorPalette: string;
-  artType: string;
-  period: string;
+  style: number;
+  material: number;
+  technique: number;
+  colorPalette: number;
+  artType: number;
+  period: number;
 };
