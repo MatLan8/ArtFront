@@ -25,7 +25,7 @@ export default function ArtForm({
     description: "",
     price: 0,
     dimensions: "",
-    creationDate: new Date(),
+    createdAt: new Date(),
     imageUrl: "",
     style: -1,
     material: -1,
@@ -79,16 +79,33 @@ export default function ArtForm({
       "period",
     ];
 
+    const dropdownFields = [
+      "style",
+      "material",
+      "technique",
+      "colorPalette",
+      "artType",
+      "period",
+    ];
+
     for (const field of requiredFields) {
       const value = formData[field as keyof Artwork];
-      if (
-        value === "" ||
-        value === 0 ||
-        value === -1 ||
-        value === null ||
-        value === undefined
-      ) {
-        return false;
+
+      // For dropdown fields, only reject -1 (unselected)
+      if (dropdownFields.includes(field)) {
+        if (value === -1 || value === null || value === undefined) {
+          return false;
+        }
+      } else {
+        // For text/number fields, reject empty strings, null, undefined, and 0 for price
+        if (
+          value === "" ||
+          value === null ||
+          value === undefined ||
+          (field === "price" && value === 0)
+        ) {
+          return false;
+        }
       }
     }
     return true;
