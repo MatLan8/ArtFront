@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import type { Artwork } from "../../types/Artwork";
 import styles from "./ArtForm.module.css";
+import { Style } from "../../data/StyleEnum";
+import { Material } from "../../data/MaterialEnum";
+import { Technique } from "../../data/TechniqueEnum";
+import { ColorPalette } from "../../data/ColorPaletteEnum";
+import { ArtType } from "../../data/ArtTypeEnum";
+import { Period } from "../../data/PeriodEnum";
 
 interface ArtFormProps {
   initialData?: Artwork | null;
@@ -178,11 +184,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Style</option>
-          <option value="1">Realistic</option>
-          <option value="2">Abstract</option>
-          <option value="3">Impressionist</option>
-          <option value="4">Surreal</option>
+          <option value="">Select Style</option>
+          {Object.entries(Style).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -195,11 +202,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Material</option>
-          <option value="1">Oil</option>
-          <option value="2">Acrylic</option>
-          <option value="3">Watercolor</option>
-          <option value="4">Canvas</option>
+          <option value="">Select Material</option>
+          {Object.entries(Material).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -212,11 +220,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Technique</option>
-          <option value="1">Brushwork</option>
-          <option value="2">Layering</option>
-          <option value="3">Glazing</option>
-          <option value="4">Impasto</option>
+          <option value="">Select Technique</option>
+          {Object.entries(Technique).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -229,11 +238,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Color Palette</option>
-          <option value="1">Warm</option>
-          <option value="2">Cool</option>
-          <option value="3">Neutral</option>
-          <option value="4">Vibrant</option>
+          <option value="">Select Color Palette</option>
+          {Object.entries(ColorPalette).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -246,11 +256,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Art Type</option>
-          <option value="1">Painting</option>
-          <option value="2">Sculpture</option>
-          <option value="3">Drawing</option>
-          <option value="4">Photography</option>
+          <option value="">Select Art Type</option>
+          {Object.entries(ArtType).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -263,11 +274,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Period</option>
-          <option value="1">Contemporary</option>
-          <option value="2">Modern</option>
-          <option value="3">Renaissance</option>
-          <option value="4">Classical</option>
+          <option value="">Select Period</option>
+          {Object.entries(Period).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 

@@ -1,7 +1,6 @@
 export const Material = {
-  0: "NotSelected",
-  1: "Oil",
-  2: "Acrylic",
-  3: "Watercolor",
-  4: "Canvas",
+  0: "Oil",
+  1: "Acrylic",
+  2: "Watercolor",
+  3: "Canvas",
 } as const;

@@ -1,7 +1,6 @@
 export const Technique = {
-  0: "NotSelected",
-  1: "Brushwork",
-  2: "Layering",
-  3: "Glazing",
-  4: "Impasto",
+  0: "Brushwork",
+  1: "Layering",
+  2: "Glazing",
+  3: "Impasto",
 } as const;

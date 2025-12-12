@@ -1,7 +1,6 @@
 export const Style = {
-  0: "NotSelected",
-  1: "Realistic",
-  2: "Abstract",
-  3: "Impressionist",
-  4: "Surreal",
+  0: "Realistic",
+  1: "Abstract",
+  2: "Impressionist",
+  3: "Surreal",
 } as const;

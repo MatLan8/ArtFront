@@ -1,7 +1,6 @@
 export const ColorPalette = {
-  0: "NotSelected",
-  1: "Warm",
-  2: "Cool",
-  3: "Neutral",
-  4: "Vibrant",
+  0: "Warm",
+  1: "Cool",
+  2: "Neutral",
+  3: "Vibrant",
 } as const;

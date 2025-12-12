@@ -1,7 +1,6 @@
 export const ArtType = {
-  0: "NotSelected",
-  1: "Painting",
-  2: "Sculpture",
-  3: "Drawing",
-  4: "Photography",
+  0: "Painting",
+  1: "Sculpture",
+  2: "Drawing",
+  3: "Photography",
 } as const;
