@@ -25,8 +25,6 @@ const queryClient = new QueryClient({
   }),
 });
 
-sessionStorage.setItem("userId", "4a6e4e66-d788-11f0-8b8d-00505684821f"); //TODO: Remove this line after testing
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

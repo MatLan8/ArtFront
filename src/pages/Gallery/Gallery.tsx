@@ -4,6 +4,7 @@ import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
 import { useGetAllArtworks } from "../../api/Artwork/useGetAllArtworks";
 import styles from "./Gallery.module.css";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { useAddCartArtwork } from "../../api/Cart/useAddCartArtwork";
 
 import { Style } from "../../data/StyleEnum";
 import { Material } from "../../data/MaterialEnum";
@@ -37,10 +38,12 @@ export default function Gallery() {
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
-
   const { data: artworks = [], error } = useGetAllArtworks();
+  const clientId = sessionStorage.getItem("userId");
+  console.log("Client ID:", clientId);
+  const { mutate: addToCart } = useAddCartArtwork();
 
-  // Apply filters from query params
+  // filters 
   useEffect(() => {
     const paramsObj: Record<string, string[]> = {};
     searchParams.forEach((value, key) => {
@@ -105,8 +108,24 @@ export default function Gallery() {
       <main className={styles.mainContent}>
         <ArtCardHolder
           artworks={filteredArtworks}
-          onAddToCart={(art) => console.log("Add to cart:", art.name)}
-          onToggleLike={(art) => console.log("Toggle like:", art.name)}
+          onAddToCart={(art) => {
+          if (!clientId) return alert("Please log in to add items to cart");
+          if (!art.id) return alert("Invalid artwork");
+          addToCart({
+            clientId: clientId,
+            artworkId: art.id,
+            count: 1,
+            price: art.price,
+          }, {
+            onSuccess: () => {
+              alert(`"${art.name}" added to cart successfully!`);
+            },
+            onError: (error) => {
+              alert(`Failed to add to cart: ${error.message}`);
+            },
+          });
+        }}
+        onToggleLike={(art) => console.log("Toggle like:", art.name)}
         />
       </main>
     </div>

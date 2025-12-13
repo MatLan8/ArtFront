@@ -15,6 +15,8 @@
   font-family: "Inter", sans-serif;
 }
 
+
+
 .title {
   font-size: 24px;
   font-weight: 700;
@@ -28,6 +30,12 @@
   background-color: black; /* color of the line */
   margin: 10px 0; /* spacing around the line */
   width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .Container input {

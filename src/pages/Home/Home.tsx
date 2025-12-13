@@ -1,73 +1,44 @@
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
 import ArtCardHolder from "../../components/ArtCardHolder/ArtCardHolder";
-import type { Artwork } from "../../components/ArtCard/ArtCard";
-
-const featuredArtworks: Artwork[] = [
-  {
-    id: 1,
-    title: "A Thousand Oceans Deep Painting",
-    artist: "Nestor Toro",
-    description: "Abstract seascape capturing the movement of ocean depths.",
-    creationDate: new Date("2024-03-10"),
-    price: 7180,
-    dimensions: "66 × 44 in",
-    imageUrl: "https://images.saatchiart.com/saatchi/574303/art/3918777/2988654-HSC00001-7.jpg",
-    style: "Abstract",
-    material: "Acrylic on Canvas",
-    technique: "Layered Brushwork",
-    colorPalette: "Cool",
-    artType: "Painting",
-    period: "2020s"
-  },
-  {
-    id: 2,
-    title: "Up Dreams",
-    artist: "Elena Martinez",
-    description: "Vibrant composition in deep blues and a woman.",
-    creationDate: new Date("2024-02-15"),
-    price: 4500,
-    dimensions: "38.2 x 57.5 in",
-    imageUrl: "https://images.saatchiart.com/saatchi/750261/art/11133205/10195481-MZNGPNTT-7.jpg",
-    style: "Contemporary",
-    material: "Oil on Canvas",
-    technique: "Impasto",
-    colorPalette: "Vibrant",
-    artType: "Painting",
-    period: "2020s"
-  },
-  {
-    id: 3,
-    title: "Urban Rhythm",
-    artist: "James Wilson",
-    description: "Geometric interpretation of city architecture.",
-    creationDate: new Date("2024-01-20"),
-    price: 3200,
-    dimensions: "18 x 21 in",
-    imageUrl: "https://images.saatchiart.com/saatchi/292357/art/2195234/1273586-HXLLLPFX-7.jpg",
-    style: "Geometric Abstract",
-    material: "Mixed Media",
-    technique: "Acrylic on Canvas",
-    colorPalette: "Monochrome",
-    artType: "Painting",
-    period: "2010s"
-  },
-];
-
-const categories = [
-  { label: "Abstract", filter: "styles", value: "Abstract" },
-  { label: "Contemporary", filter: "styles", value: "Contemporary" },
-  { label: "Landscape", filter: "styles", value: "Landscape" },
-  { label: "Minimalist", filter: "styles", value: "Minimalist" },
-  { label: "Oil", filter: "materials", value: "Oil" },
-  { label: "Acrylic", filter: "materials", value: "Acrylic" },
-  { label: "Impasto", filter: "techniques", value: "Impasto" },
-  { label: "Vibrant", filter: "colorPalettes", value: "Vibrant" },
-];
-
+import type { Artwork } from "../../types/Artwork";
+import { useGetArtworkById } from "../../api/Artwork/useGetArtworkById";
+import { useAddCartArtwork } from "../../api/Cart/useAddCartArtwork";
 
 
 export default function Home() {
+  const clientId = sessionStorage.getItem("userId");
+  const { mutate: addToCart } = useAddCartArtwork();
+
+  const artwork1 = useGetArtworkById("b97433f4-48a5-4833-a2ee-2660d5917a7c");
+  const artwork2 = useGetArtworkById("23ba7a13-ecf0-4495-8c19-e11dd1f3fe1b");
+  const artwork3 = useGetArtworkById("3798da86-5b19-4427-a2d4-d13d47630a72");
+
+  // Combine data safely
+  const featuredArtworks: Artwork[] = [
+    artwork1.data,
+    artwork2.data,
+    artwork3.data,
+  ].filter((a): a is Artwork => !!a); // filter out undefined
+
+  // Handle loading state
+  const isLoading =
+    artwork1.isLoading || artwork2.isLoading || artwork3.isLoading;
+
+  // Handle error state
+  const error =
+    artwork1.error || artwork2.error || artwork3.error;
+
+  const categories = [
+    { label: "Abstract", filter: "style", value: "Abstract" },
+    { label: "Contemporary", filter: "style", value: "Contemporary" },
+    { label: "Minimalist", filter: "style", value: "Minimalist" },
+    { label: "Oil", filter: "material", value: "Oil" },
+    { label: "Acrylic", filter: "material", value: "Acrylic" },
+    { label: "Impasto", filter: "technique", value: "Impasto" },
+    { label: "Vibrant", filter: "colorPalette", value: "Vibrant" },
+  ];
+
   return (
     <div className={styles.home}>
       <section className={styles.hero}>
@@ -99,8 +70,24 @@ export default function Home() {
         <div className={styles.featuredWrapper}>
             <ArtCardHolder
             artworks={featuredArtworks}
-            onAddToCart={(a) => console.log("Add to cart:", a.title)}
-            onToggleLike={(a) => console.log("Like:", a.title)}
+            onAddToCart={(art) => {
+              if (!clientId) return alert("Please log in to add items to cart");
+              if (!art.id) return alert("Invalid artwork");
+              addToCart({
+                clientId: clientId,
+                artworkId: art.id,
+                count: 1,
+                price: art.price,
+              }, {
+                onSuccess: () => {
+                  alert(`"${art.name}" added to cart successfully!`);
+                },
+                onError: (error) => {
+                  alert(`Failed to add to cart: ${error.message}`);
+                },
+              });
+            }}
+            onToggleLike={(a) => console.log("Like:", a.name)}
             />
         </div>
         </section>

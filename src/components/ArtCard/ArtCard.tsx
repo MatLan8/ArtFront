@@ -21,7 +21,7 @@ function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardProps) {
   };
 
   const handleAddToCart = () => {
-    if (onAddToCart) onAddToCart(artwork);
+    onAddToCart?.(artwork);
   };
 
   const priceFormatted = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(artwork.price);
