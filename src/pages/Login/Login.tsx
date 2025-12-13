@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import style from "./Login.module.css";
 import { useLogin } from "../../api/Auth/useLogin";
 
@@ -7,12 +7,6 @@ function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const loginMutation = useLogin();
 
-  useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
-    if (userId) {
-      console.log("Already logged in, user ID:", userId);
-    }
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm(prev => ({
