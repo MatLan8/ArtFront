@@ -21,14 +21,6 @@ export default function Home() {
     artwork3.data,
   ].filter((a): a is Artwork => !!a); // filter out undefined
 
-  // Handle loading state
-  const isLoading =
-    artwork1.isLoading || artwork2.isLoading || artwork3.isLoading;
-
-  // Handle error state
-  const error =
-    artwork1.error || artwork2.error || artwork3.error;
-
   const categories = [
     { label: "Abstract", filter: "style", value: "Abstract" },
     { label: "Contemporary", filter: "style", value: "Contemporary" },

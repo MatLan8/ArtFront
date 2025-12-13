@@ -38,7 +38,7 @@ export default function Gallery() {
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
-  const { data: artworks = [], error } = useGetAllArtworks();
+  const { data: artworks = [] } = useGetAllArtworks();
   const clientId = sessionStorage.getItem("userId");
   console.log("Client ID:", clientId);
   const { mutate: addToCart } = useAddCartArtwork();
