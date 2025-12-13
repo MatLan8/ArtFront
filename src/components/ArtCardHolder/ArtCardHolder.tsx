@@ -17,6 +17,15 @@ function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: ArtCardHolderPro
     1100: 1
   };
 
+  if (artworks.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <p>No artworks found with the selected filters.</p>
+        <p>Try adjusting your filters to see more results.</p>
+      </div>
+    );
+  }
+
   return (
     <Masonry
       breakpointCols={breakpointColumns}
