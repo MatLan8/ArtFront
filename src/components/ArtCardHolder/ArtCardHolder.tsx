@@ -1,5 +1,6 @@
+import { memo } from 'react';
 import Masonry from 'react-masonry-css';
-import type { Artwork } from '../ArtCard/ArtCard';
+import type { Artwork } from "../../types/Artwork";
 import ArtCard from '../ArtCard/ArtCard';
 import styles from './ArtCardHolder.module.css';
 
@@ -9,7 +10,7 @@ interface ArtCardHolderProps {
   onToggleLike?: (artwork: Artwork) => void;
 }
 
-export default function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: ArtCardHolderProps) {
+function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: ArtCardHolderProps) {
   const breakpointColumns = {
     default: 3,
     1600: 2,
@@ -34,3 +35,5 @@ export default function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: A
     </Masonry>
   );
 }
+
+export default memo(ArtCardHolder);

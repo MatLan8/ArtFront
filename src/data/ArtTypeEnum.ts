@@ -3,5 +3,5 @@ export const ArtType = {
   1: "Drawing",
   2: "Digital Art",
   3: "Mixed Media",
-  4: "Photography",
+  4:"Photography",
 } as const;
