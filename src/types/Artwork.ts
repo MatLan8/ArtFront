@@ -1,10 +1,11 @@
 export type Artwork = {
-  id?: number;
+  id?: number; //TODO make non-optional
   name: string;
   author: string;
   description: string;
   price: number;
   dimensions: string;
+  createdAt: Date;
   imageUrl: string;
   style: number;
   material: number;

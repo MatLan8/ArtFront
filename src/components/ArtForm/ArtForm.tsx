@@ -25,13 +25,14 @@ export default function ArtForm({
     description: "",
     price: 0,
     dimensions: "",
+    createdAt: new Date(),
     imageUrl: "",
-    style: 0,
-    material: 0,
-    technique: 0,
-    colorPalette: 0,
-    artType: 0,
-    period: 0,
+    style: -1,
+    material: -1,
+    technique: -1,
+    colorPalette: -1,
+    artType: -1,
+    period: -1,
   };
 
   const [formData, setFormData] = useState<Artwork>(initialData || emptyArt);
@@ -78,15 +79,33 @@ export default function ArtForm({
       "period",
     ];
 
+    const dropdownFields = [
+      "style",
+      "material",
+      "technique",
+      "colorPalette",
+      "artType",
+      "period",
+    ];
+
     for (const field of requiredFields) {
       const value = formData[field as keyof Artwork];
-      if (
-        value === "" ||
-        value === 0 ||
-        value === null ||
-        value === undefined
-      ) {
-        return false;
+
+      // For dropdown fields, only reject -1 (unselected)
+      if (dropdownFields.includes(field)) {
+        if (value === -1 || value === null || value === undefined) {
+          return false;
+        }
+      } else {
+        // For text/number fields, reject empty strings, null, undefined, and 0 for price
+        if (
+          value === "" ||
+          value === null ||
+          value === undefined ||
+          (field === "price" && value === 0)
+        ) {
+          return false;
+        }
       }
     }
     return true;
@@ -184,9 +203,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Style</option>
+          <option value="-1">Select Style</option>
           {Object.entries(Style).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -202,9 +221,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Material</option>
+          <option value="-1">Select Material</option>
           {Object.entries(Material).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -220,9 +239,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Technique</option>
+          <option value="-1">Select Technique</option>
           {Object.entries(Technique).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -238,9 +257,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Color Palette</option>
+          <option value="-1">Select Color Palette</option>
           {Object.entries(ColorPalette).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -256,9 +275,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Art Type</option>
+          <option value="-1">Select Art Type</option>
           {Object.entries(ArtType).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
@@ -274,9 +293,9 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="">Select Period</option>
+          <option value="-1">Select Period</option>
           {Object.entries(Period).map(([key, value]) => (
-            <option key={key} value={key}>
+            <option key={key} value={Number(key)}>
               {value}
             </option>
           ))}
