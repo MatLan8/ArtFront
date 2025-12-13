@@ -7,6 +7,8 @@ import { Technique } from "../../data/TechniqueEnum";
 import { ColorPalette } from "../../data/ColorPaletteEnum";
 import { ArtType } from "../../data/ArtTypeEnum";
 import { Period } from "../../data/PeriodEnum";
+import { useRemoveArtwork } from "../../api/Artwork/useRemoveArtwork";
+import { useUpdateArtwork } from "../../api/Artwork/useUpdateArtwork";
 
 interface ArtFormProps {
   initialData?: Artwork | null;
@@ -19,6 +21,10 @@ export default function ArtForm({
   onSubmit,
   onDelete,
 }: ArtFormProps) {
+  const { mutate: removeArtwork } = useRemoveArtwork();
+  const { mutate: updateArtwork, isPending: isUpdating } = useUpdateArtwork();
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
   const emptyArt: Artwork = {
     name: "",
     author: "",
@@ -91,13 +97,11 @@ export default function ArtForm({
     for (const field of requiredFields) {
       const value = formData[field as keyof Artwork];
 
-      // For dropdown fields, only reject -1 (unselected)
       if (dropdownFields.includes(field)) {
         if (value === -1 || value === null || value === undefined) {
           return false;
         }
       } else {
-        // For text/number fields, reject empty strings, null, undefined, and 0 for price
         if (
           value === "" ||
           value === null ||
@@ -114,18 +118,42 @@ export default function ArtForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit?.(formData);
+      if (initialData) {
+        updateArtwork(formData, {
+          onSuccess: () => {
+            setSuccessMessage("Artwork updated successfully!");
+            setTimeout(() => setSuccessMessage(""), 3000);
+          },
+        });
+      } else {
+        onSubmit?.(formData);
+      }
     } else {
       alert("Please fill in all required fields");
     }
   };
 
   const handleDelete = () => {
-    if (onDelete) onDelete(formData);
+    if (formData.id) {
+      removeArtwork(formData.id);
+    }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {successMessage && (
+        <div
+          style={{
+            padding: "10px",
+            marginBottom: "10px",
+            backgroundColor: "#d4edda",
+            color: "#155724",
+            borderRadius: "4px",
+          }}
+        >
+          {successMessage}
+        </div>
+      )}
       <div className={styles.field}>
         <label className={styles.label}>Name</label>
         <input

@@ -1,5 +1,5 @@
 export type Artwork = {
-  id?: number; //TODO make non-optional
+  id?: string; //TODO make non-optional
   name: string;
   author: string;
   description: string;
