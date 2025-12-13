@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import FilterPanel from "../../components/FilterPanel/FilterPanel";
 import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
-import type { Artwork } from "../../types/Artwork";
 import { useGetAllArtworks } from "../../api/Artwork/useGetAllArtworks";
 import styles from "./Gallery.module.css";
 import { useLocation, useSearchParams } from "react-router-dom";
@@ -39,7 +38,7 @@ export default function Gallery() {
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
 
-  const { data: artworks = [], isLoading, error } = useGetAllArtworks();
+  const { data: artworks = [], error } = useGetAllArtworks();
 
   // Apply filters from query params
   useEffect(() => {

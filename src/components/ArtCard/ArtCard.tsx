@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Heart, ShoppingBag } from "lucide-react";
 import styles from "./ArtCard.module.css";
 import type { Artwork } from "../../types/Artwork";
@@ -10,8 +10,10 @@ interface ArtCardProps {
 }
 
 /** --- Component --- */
-export default function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardProps) {
+function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardProps) {
   const [liked, setLiked] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -23,18 +25,26 @@ export default function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardP
   };
 
   const priceFormatted = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(artwork.price);
+  
   const handleImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = "/fallback-image.png";
+    setImageFailed(true);
+    e.currentTarget.src = "/fallback-image.svg";
+  };
+
+  const handleImgLoad = () => {
+    setImageLoaded(true);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.imageWrapper}>
+      <div className={`${styles.imageWrapper} ${imageLoaded || imageFailed ? styles.loaded : ''}`}>
         <img
           src={artwork.imageUrl}
           alt={`${artwork.name} — ${artwork.author}`}
           onError={handleImgError}
+          onLoad={handleImgLoad}
           className={styles.image}
+          loading="lazy"
         />
       </div>
 
@@ -82,3 +92,5 @@ export default function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardP
     </div>
   );
 }
+
+export default memo(ArtCard);
