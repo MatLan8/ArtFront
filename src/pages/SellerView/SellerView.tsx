@@ -7,7 +7,6 @@ function SellerView() {
   const navigate = useNavigate();
   const vendorId = sessionStorage.getItem("userId") || "";
 
-  console.log("Vendor ID:", vendorId);
   const { data: artworks = [] } = useGetAllArtworksByVendorId(vendorId || "");
 
   const handleAdd = () => {

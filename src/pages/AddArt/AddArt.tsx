@@ -24,7 +24,6 @@ function AddArt() {
 
     createArtwork(payload, {
       onSuccess: () => {
-        console.log("Art added successfully");
         navigate("/Seller-view");
       },
       onError: (err) => {
