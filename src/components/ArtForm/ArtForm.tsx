@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Artwork } from "../../types/Artwork";
 import styles from "./ArtForm.module.css";
 import { Style } from "../../data/StyleEnum";
@@ -9,6 +10,7 @@ import { ArtType } from "../../data/ArtTypeEnum";
 import { Period } from "../../data/PeriodEnum";
 import { useRemoveArtwork } from "../../api/Artwork/useRemoveArtwork";
 import { useUpdateArtwork } from "../../api/Artwork/useUpdateArtwork";
+import { toast } from "react-hot-toast";
 
 interface ArtFormProps {
   initialData?: Artwork | null;
@@ -21,9 +23,10 @@ export default function ArtForm({
   onSubmit,
   onDelete,
 }: ArtFormProps) {
+  const navigate = useNavigate();
   const { mutate: removeArtwork } = useRemoveArtwork();
   const { mutate: updateArtwork, isPending: isUpdating } = useUpdateArtwork();
-  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const emptyArt: Artwork = {
     name: "",
@@ -121,39 +124,35 @@ export default function ArtForm({
       if (initialData) {
         updateArtwork(formData, {
           onSuccess: () => {
-            setSuccessMessage("Artwork updated successfully!");
-            setTimeout(() => setSuccessMessage(""), 3000);
+            toast.success("Artwork updated successfully!");
           },
         });
       } else {
         onSubmit?.(formData);
       }
     } else {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all the fields");
     }
   };
 
   const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    setShowDeleteConfirm(false);
     if (formData.id) {
-      removeArtwork(formData.id);
+      removeArtwork(formData.id, {
+        onSuccess: () => {
+          toast.success("Artwork deleted");
+          navigate("/Seller-view");
+        },
+      });
     }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      {successMessage && (
-        <div
-          style={{
-            padding: "10px",
-            marginBottom: "10px",
-            backgroundColor: "#d4edda",
-            color: "#155724",
-            borderRadius: "4px",
-          }}
-        >
-          {successMessage}
-        </div>
-      )}
       <div className={styles.field}>
         <label className={styles.label}>Name</label>
         <input
@@ -161,7 +160,6 @@ export default function ArtForm({
           name="name"
           value={formData.name}
           onChange={handleChange}
-          required
         />
       </div>
 
@@ -172,7 +170,6 @@ export default function ArtForm({
           name="author"
           value={formData.author}
           onChange={handleChange}
-          required
         />
       </div>
 
@@ -183,7 +180,6 @@ export default function ArtForm({
           name="description"
           value={formData.description}
           onChange={handleChange}
-          required
         />
       </div>
 
@@ -195,7 +191,6 @@ export default function ArtForm({
           name="price"
           value={formData.price}
           onChange={handleChange}
-          required
           min="1"
         />
       </div>
@@ -207,7 +202,6 @@ export default function ArtForm({
           name="dimensions"
           value={formData.dimensions}
           onChange={handleChange}
-          required
         />
       </div>
 
@@ -218,7 +212,6 @@ export default function ArtForm({
           name="imageUrl"
           value={formData.imageUrl}
           onChange={handleChange}
-          required
         />
       </div>
 
@@ -229,7 +222,6 @@ export default function ArtForm({
           name="style"
           value={formData.style}
           onChange={handleChange}
-          required
         >
           <option value="-1">Select Style</option>
           {Object.entries(Style).map(([key, value]) => (
@@ -247,7 +239,6 @@ export default function ArtForm({
           name="material"
           value={formData.material}
           onChange={handleChange}
-          required
         >
           <option value="-1">Select Material</option>
           {Object.entries(Material).map(([key, value]) => (
@@ -265,7 +256,6 @@ export default function ArtForm({
           name="technique"
           value={formData.technique}
           onChange={handleChange}
-          required
         >
           <option value="-1">Select Technique</option>
           {Object.entries(Technique).map(([key, value]) => (
@@ -283,7 +273,6 @@ export default function ArtForm({
           name="colorPalette"
           value={formData.colorPalette}
           onChange={handleChange}
-          required
         >
           <option value="-1">Select Color Palette</option>
           {Object.entries(ColorPalette).map(([key, value]) => (
@@ -301,7 +290,6 @@ export default function ArtForm({
           name="artType"
           value={formData.artType}
           onChange={handleChange}
-          required
         >
           <option value="-1">Select Art Type</option>
           {Object.entries(ArtType).map(([key, value]) => (
@@ -319,7 +307,6 @@ export default function ArtForm({
           name="period"
           value={formData.period}
           onChange={handleChange}
-          required
         >
           <option value="-1">Select Period</option>
           {Object.entries(Period).map(([key, value]) => (
@@ -335,13 +322,75 @@ export default function ArtForm({
       </button>
 
       {initialData && (
-        <button
-          type="button"
-          className={styles.deleteButton}
-          onClick={handleDelete}
-        >
-          Delete Artwork
-        </button>
+        <>
+          <button
+            type="button"
+            className={styles.deleteButton}
+            onClick={handleDelete}
+          >
+            Delete Artwork
+          </button>
+          {showDeleteConfirm && (
+            <div
+              style={{
+                position: "fixed",
+                inset: 0,
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1000,
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "white",
+                  padding: "20px",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  minWidth: "300px",
+                }}
+              >
+                <h3>Are you sure?</h3>
+                <p>Do you really want to delete this artwork?</p>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "center",
+                  }}
+                >
+                  <button
+                    onClick={confirmDelete}
+                    style={{
+                      padding: "8px 16px",
+                      backgroundColor: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    style={{
+                      padding: "8px 16px",
+                      backgroundColor: "#6c757d",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </form>
   );

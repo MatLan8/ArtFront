@@ -3,6 +3,7 @@ import styles from "./AddArt.module.css";
 import ArtForm from "../../components/ArtForm/ArtForm";
 import type { Artwork } from "../../types/Artwork";
 import { useCreateArtwork } from "../../api/Artwork/useCreateArtwork";
+import { toast } from "react-hot-toast";
 
 function AddArt() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function AddArt() {
     createArtwork(payload, {
       onSuccess: () => {
         navigate("/Seller-view");
+        toast.success("Artwork added successfully!");
       },
       onError: (err) => {
         console.error("Error adding art:", err.message);
