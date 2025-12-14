@@ -126,7 +126,7 @@ export default function Gallery() {
             price: art.price,
           }, {
             onSuccess: () => {
-              toast.success(`"${art.name}" added to cart`);
+              toast.success(`${art.name} added to cart`);
             },
             onError: (error) => {
               toast.error(`Failed to add to cart: ${error.message}`);

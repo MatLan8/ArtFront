@@ -81,7 +81,7 @@ export default function Home() {
                 price: art.price,
               }, {
                 onSuccess: () => {
-                  toast.success(`"${art.name}" added to cart`);
+                  toast.success(`${art.name} added to cart`);
                 },
                 onError: (error) => {
                   toast.error(`Failed to add to cart: ${error.message}`);
@@ -91,13 +91,6 @@ export default function Home() {
             onToggleLike={(art) => {          
               if (!clientId) return toast.error("Please log in to like artworks");
               if (!art.id) return toast.error("Invalid artwork");
-
-              // If already liked, show confirmation message and skip API call
-              if (likedIds.has(art.id)) {
-                toast(`"${art.name}" is already in your likes.`);
-                return;
-              }
-
               Like(
                 {
                   clientId: clientId,
