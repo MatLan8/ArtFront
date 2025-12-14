@@ -4,7 +4,10 @@ import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
 import { useGetAllArtworks } from "../../api/Artwork/useGetAllArtworks";
 import styles from "./Gallery.module.css";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { AxiosError } from "axios";
 import { useAddCartArtwork } from "../../api/Cart/useAddCartArtwork";
+import { useAddLikedArtwork } from "../../api/Client/useAddLikedArtwork";
+import { useGetAllClientLikedArtworks } from "../../api/Client/useGetAllClientLikedArtworks";
 
 import { Style } from "../../data/StyleEnum";
 import { Material } from "../../data/MaterialEnum";
@@ -40,8 +43,10 @@ export default function Gallery() {
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
   const { data: artworks = [] } = useGetAllArtworks();
   const clientId = sessionStorage.getItem("userId");
-  console.log("Client ID:", clientId);
   const { mutate: addToCart } = useAddCartArtwork();
+  const { mutate: Like } = useAddLikedArtwork();
+  const { data: likedArtworks = [] } = useGetAllClientLikedArtworks(clientId ?? "");
+  const likedIds = new Set(likedArtworks.map((a) => a.id).filter(Boolean) as string[]);
 
   // filters 
   useEffect(() => {
@@ -108,6 +113,7 @@ export default function Gallery() {
       <main className={styles.mainContent}>
         <ArtCardHolder
           artworks={filteredArtworks}
+          likedIds={likedIds}
           onAddToCart={(art) => {
           if (!clientId) return alert("Please log in to add items to cart");
           if (!art.id) return alert("Invalid artwork");
@@ -125,7 +131,21 @@ export default function Gallery() {
             },
           });
         }}
-        onToggleLike={(art) => console.log("Toggle like:", art.name)}
+        onToggleLike={(art) =>{          
+          if (!clientId) return alert("Please log in to like artworks");
+          if (!art.id) return alert("Invalid artwork");
+          Like({
+            clientId: clientId,
+            artworkId: art.id,},{
+            onSuccess: () => {
+              alert(`You liked ${art.name}!`); 
+            },
+            onError: (error: AxiosError) => {
+              const msg = (error.response?.data as any)?.message || error.response?.data || "Failed to like artwork";
+              alert(msg);
+            },
+          });
+            }}
         />
       </main>
     </div>
