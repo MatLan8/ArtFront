@@ -46,7 +46,7 @@ export default function Gallery() {
   const clientId = sessionStorage.getItem("userId");
 
   // recomendations logic
-  const { data: recommendedData } = useGetAllArtworksWithRecommendations(clientId ?? "");
+  const { data: recommendedData = [] } = useGetAllArtworksWithRecommendations(clientId ?? "");
   const { data: artworksFallback = [] } = useGetAllArtworks();
   const artworks = (clientId && (recommendedData?.length ?? 0) > 0 ? recommendedData : artworksFallback) ?? [];
   const { mutate: addToCart } = useAddCartArtwork();
