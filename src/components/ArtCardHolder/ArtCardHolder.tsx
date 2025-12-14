@@ -1,14 +1,14 @@
 import { memo } from 'react';
 import Masonry from 'react-masonry-css';
-import type { Artwork } from "../../types/Artwork";
+import type { ArtworkWithFlag } from "../../types/Artwork";
 import ArtCard from '../ArtCard/ArtCard';
 import styles from './ArtCardHolder.module.css';
 
 interface ArtCardHolderProps {
-  artworks: Artwork[];
+  artworks: ArtworkWithFlag[];
   likedIds?: Set<string>;
-  onAddToCart?: (artwork: Artwork) => void;
-  onToggleLike?: (artwork: Artwork) => void;
+  onAddToCart?: (artwork: ArtworkWithFlag) => void;
+  onToggleLike?: (artwork: ArtworkWithFlag) => void;
   isAuthenticated?: boolean;
 }
 
