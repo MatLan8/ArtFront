@@ -6,11 +6,12 @@ import styles from './ArtCardHolder.module.css';
 
 interface ArtCardHolderProps {
   artworks: Artwork[];
+  likedIds?: Set<string>;
   onAddToCart?: (artwork: Artwork) => void;
   onToggleLike?: (artwork: Artwork) => void;
 }
 
-function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: ArtCardHolderProps) {
+function ArtCardHolder({ artworks, likedIds, onAddToCart, onToggleLike }: ArtCardHolderProps) {
   const breakpointColumns = {
     default: 3,
     1600: 2,
@@ -36,6 +37,7 @@ function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: ArtCardHolderPro
         <div key={artwork.id} className={styles.masonryItem}>
           <ArtCard
             artwork={artwork}
+            isLiked={artwork.id ? likedIds?.has(artwork.id) : false}
             onAddToCart={onAddToCart}
             onToggleLike={onToggleLike}
           />

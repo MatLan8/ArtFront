@@ -1,23 +1,29 @@
-import { useState, memo } from "react";
+import { useState, useEffect, memo } from "react";
 import { Heart, ShoppingBag } from "lucide-react";
 import styles from "./ArtCard.module.css";
 import type { Artwork } from "../../types/Artwork";
 
 interface ArtCardProps {
   artwork: Artwork;
+  isLiked?: boolean;
   onAddToCart?: (artwork: Artwork) => void;
   onToggleLike?: (artwork: Artwork) => void;
 }
 
 /** --- Component --- */
-function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardProps) {
-  const [liked, setLiked] = useState(false);
+function ArtCard({ artwork, isLiked = false, onAddToCart, onToggleLike }: ArtCardProps) {
+  const [liked, setLiked] = useState(isLiked);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
 
+  useEffect(() => {
+    setLiked(isLiked);
+  }, [isLiked]);
+
   const handleLike = () => {
-    setLiked(!liked);
-    if (onToggleLike) onToggleLike(artwork);
+    if (liked) return; // keep liked state; don't toggle off
+    setLiked(true);
+    onToggleLike?.(artwork);
   };
 
   const handleAddToCart = () => {
@@ -62,11 +68,12 @@ function ArtCard({ artwork, onAddToCart, onToggleLike }: ArtCardProps) {
             type="button"
             aria-label={liked ? "Unlike artwork" : "Like artwork"}
             aria-pressed={liked}
-            className={styles.btn}
+            className={`${styles.btn} ${liked ? styles.liked : ""}`}
           >
             <Heart
               size={20}
-              className={liked ? "text-red-500 fill-red-500" : "text-gray-600"}
+              color={liked ? "#e63946" : "#555"}
+              fill={liked ? "#e63946" : "none"}
             />
           </button>
         </div>

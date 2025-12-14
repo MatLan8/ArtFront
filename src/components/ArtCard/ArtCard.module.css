@@ -57,3 +57,12 @@
 .btn:hover {
   color: rgb(171, 22, 22);
 }
+
+.liked {
+  color: #e63946;
+}
+
+.liked svg {
+  fill: #e63946;
+  color: #e63946;
+}
