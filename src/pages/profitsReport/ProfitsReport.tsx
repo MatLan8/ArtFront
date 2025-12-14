@@ -56,6 +56,13 @@ function ProfitsReport() {
     "#29b6f6",
   ];
 
+  // Sort artworks by revenue for performance chart
+  const topArtworks = useMemo(() => {
+    return (artworkDetails || [])
+      .sort((a, b) => b.totalRevenue - a.totalRevenue)
+      .slice(0, 10);
+  }, [artworkDetails]);
+
   if (!vendorId) {
     return (
       <div className={styles.container}>
@@ -76,7 +83,9 @@ function ProfitsReport() {
         <div className={styles.list}>
           <div className={styles.title}>Profits Report</div>
           <div className={styles.divider} />
-          <div className={styles.loadingMessage}>Loading your sales data...</div>
+          <div className={styles.loadingMessage}>
+            Loading your sales data...
+          </div>
         </div>
       </div>
     );
@@ -93,13 +102,6 @@ function ProfitsReport() {
       </div>
     );
   }
-
-  // Sort artworks by revenue for performance chart
-  const topArtworks = useMemo(() => {
-    return (artworkDetails || [])
-      .sort((a, b) => b.totalRevenue - a.totalRevenue)
-      .slice(0, 10);
-  }, [artworkDetails]);
 
   return (
     <div className={styles.container}>
@@ -258,7 +260,11 @@ function ProfitsReport() {
                   <XAxis type="number" />
                   <YAxis dataKey="name" type="category" width={150} />
                   <Tooltip />
-                  <Bar dataKey="totalRevenue" fill="#82ca9d" name="Revenue ($)" />
+                  <Bar
+                    dataKey="totalRevenue"
+                    fill="#82ca9d"
+                    name="Revenue ($)"
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
