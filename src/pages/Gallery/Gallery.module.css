@@ -4,39 +4,35 @@
   min-height: 100vh;
   background: #f9fafb;
   width: 100%;
-  padding: 1rem 1rem 1rem 2rem; 
+  padding: 1rem 1rem 1rem 2rem;
   gap: 1.5rem;
   box-sizing: border-box;
 }
 
-
-
 .sidebarInlineWrapper {
   flex-shrink: 0;
-  width: 260px; 
+  width: 260px;
   position: relative;
 }
 
-
 .mainContent {
-  flex: 1;             
+  flex: 1;
   width: 100%;
 }
 
 .galleryHeading {
   width: 100%;
   text-align: left;
-  font-size: 2.5rem;      
+  font-size: 2.5rem;
   font-weight: 600;
   margin: 2rem 0;
   color: #333;
-  padding-left: 3rem;          
+  padding-left: 3rem;
 }
-
 
 @media (max-width: 900px) {
   .sidebarInlineWrapper {
-    display: none; 
+    display: none;
   }
 }
 button {
@@ -60,5 +56,3 @@ button {
     background-color: #f9f9f9;
   }
 }
-
-

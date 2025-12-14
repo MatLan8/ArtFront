@@ -2,10 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 export interface CartArtworkCreate {
-  ClientId: number;
-  ArtworkId: number;
-  Count: number;
-  Price: number;
+  clientId: string;
+  artworkId: string;
+  count: number;
+  price: number;
 }
 
 export const useAddCartArtwork = () => {

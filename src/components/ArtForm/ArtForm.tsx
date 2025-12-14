@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import type { Artwork } from "../../types/Artwork";
 import styles from "./ArtForm.module.css";
+import { Style } from "../../data/StyleEnum";
+import { Material } from "../../data/MaterialEnum";
+import { Technique } from "../../data/TechniqueEnum";
+import { ColorPalette } from "../../data/ColorPaletteEnum";
+import { ArtType } from "../../data/ArtTypeEnum";
+import { Period } from "../../data/PeriodEnum";
+import { useRemoveArtwork } from "../../api/Artwork/useRemoveArtwork";
+import { useUpdateArtwork } from "../../api/Artwork/useUpdateArtwork";
 
 interface ArtFormProps {
   initialData?: Artwork | null;
@@ -13,19 +21,24 @@ export default function ArtForm({
   onSubmit,
   onDelete,
 }: ArtFormProps) {
+  const { mutate: removeArtwork } = useRemoveArtwork();
+  const { mutate: updateArtwork, isPending: isUpdating } = useUpdateArtwork();
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
   const emptyArt: Artwork = {
     name: "",
     author: "",
     description: "",
     price: 0,
     dimensions: "",
+    createdAt: new Date(),
     imageUrl: "",
-    style: 0,
-    material: 0,
-    technique: 0,
-    colorPalette: 0,
-    artType: 0,
-    period: 0,
+    style: -1,
+    material: -1,
+    technique: -1,
+    colorPalette: -1,
+    artType: -1,
+    period: -1,
   };
 
   const [formData, setFormData] = useState<Artwork>(initialData || emptyArt);
@@ -72,15 +85,31 @@ export default function ArtForm({
       "period",
     ];
 
+    const dropdownFields = [
+      "style",
+      "material",
+      "technique",
+      "colorPalette",
+      "artType",
+      "period",
+    ];
+
     for (const field of requiredFields) {
       const value = formData[field as keyof Artwork];
-      if (
-        value === "" ||
-        value === 0 ||
-        value === null ||
-        value === undefined
-      ) {
-        return false;
+
+      if (dropdownFields.includes(field)) {
+        if (value === -1 || value === null || value === undefined) {
+          return false;
+        }
+      } else {
+        if (
+          value === "" ||
+          value === null ||
+          value === undefined ||
+          (field === "price" && value === 0)
+        ) {
+          return false;
+        }
       }
     }
     return true;
@@ -89,18 +118,42 @@ export default function ArtForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit?.(formData);
+      if (initialData) {
+        updateArtwork(formData, {
+          onSuccess: () => {
+            setSuccessMessage("Artwork updated successfully!");
+            setTimeout(() => setSuccessMessage(""), 3000);
+          },
+        });
+      } else {
+        onSubmit?.(formData);
+      }
     } else {
       alert("Please fill in all required fields");
     }
   };
 
   const handleDelete = () => {
-    if (onDelete) onDelete(formData);
+    if (formData.id) {
+      removeArtwork(formData.id);
+    }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {successMessage && (
+        <div
+          style={{
+            padding: "10px",
+            marginBottom: "10px",
+            backgroundColor: "#d4edda",
+            color: "#155724",
+            borderRadius: "4px",
+          }}
+        >
+          {successMessage}
+        </div>
+      )}
       <div className={styles.field}>
         <label className={styles.label}>Name</label>
         <input
@@ -178,11 +231,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Style</option>
-          <option value="1">Realistic</option>
-          <option value="2">Abstract</option>
-          <option value="3">Impressionist</option>
-          <option value="4">Surreal</option>
+          <option value="-1">Select Style</option>
+          {Object.entries(Style).map(([key, value]) => (
+            <option key={key} value={Number(key)}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -195,11 +249,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Material</option>
-          <option value="1">Oil</option>
-          <option value="2">Acrylic</option>
-          <option value="3">Watercolor</option>
-          <option value="4">Canvas</option>
+          <option value="-1">Select Material</option>
+          {Object.entries(Material).map(([key, value]) => (
+            <option key={key} value={Number(key)}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -212,11 +267,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Technique</option>
-          <option value="1">Brushwork</option>
-          <option value="2">Layering</option>
-          <option value="3">Glazing</option>
-          <option value="4">Impasto</option>
+          <option value="-1">Select Technique</option>
+          {Object.entries(Technique).map(([key, value]) => (
+            <option key={key} value={Number(key)}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -229,11 +285,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Color Palette</option>
-          <option value="1">Warm</option>
-          <option value="2">Cool</option>
-          <option value="3">Neutral</option>
-          <option value="4">Vibrant</option>
+          <option value="-1">Select Color Palette</option>
+          {Object.entries(ColorPalette).map(([key, value]) => (
+            <option key={key} value={Number(key)}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -246,11 +303,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Art Type</option>
-          <option value="1">Painting</option>
-          <option value="2">Sculpture</option>
-          <option value="3">Drawing</option>
-          <option value="4">Photography</option>
+          <option value="-1">Select Art Type</option>
+          {Object.entries(ArtType).map(([key, value]) => (
+            <option key={key} value={Number(key)}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -263,11 +321,12 @@ export default function ArtForm({
           onChange={handleChange}
           required
         >
-          <option value="0">Select Period</option>
-          <option value="1">Contemporary</option>
-          <option value="2">Modern</option>
-          <option value="3">Renaissance</option>
-          <option value="4">Classical</option>
+          <option value="-1">Select Period</option>
+          {Object.entries(Period).map(([key, value]) => (
+            <option key={key} value={Number(key)}>
+              {value}
+            </option>
+          ))}
         </select>
       </div>
 
