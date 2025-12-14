@@ -47,8 +47,10 @@ export default function Gallery() {
 
   // recomendations logic
   const { data: recommendedData } = useGetAllArtworksWithRecommendations(clientId ?? "");
-  const { data: artworksFallback = [] } = useGetAllArtworks();
-  const artworks = (clientId && (recommendedData?.length ?? 0) > 0 ? recommendedData : artworksFallback) ?? [];
+  const { data: allArtworks } = useGetAllArtworks();
+  const artworks = Array.isArray(recommendedData) && recommendedData.length > 0 
+    ? recommendedData 
+    : (Array.isArray(allArtworks) ? allArtworks : []);
   const { mutate: addToCart } = useAddCartArtwork();
   const { mutate: Like } = useAddLikedArtwork();
   const { data: likedArtworks = [] } = useGetAllClientLikedArtworks(clientId ?? "");
