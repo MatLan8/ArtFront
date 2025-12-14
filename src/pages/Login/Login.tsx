@@ -29,7 +29,7 @@ function Login() {
           toast.success("Login successful!");
           navigate("/");
         },
-        onError: (error) => {
+        onError: () => {
           toast.error(
             "Login failed. Please check your credentials and try again."
           );
