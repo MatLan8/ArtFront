@@ -116,3 +116,50 @@
 .CheckoutButton:hover {
   background-color: #006400;
 }
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: 600;
+  text-align: right;
+}
+
+.totalRow .price {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.successMessage,
+.errorMessage {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  animation: fadeOut 3s forwards;
+}
+
+.successMessage {
+  background-color: green;
+  color: black;
+}
+
+.errorMessage {
+  background-color: red;
+  color: black;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
