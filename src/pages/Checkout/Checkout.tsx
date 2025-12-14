@@ -2,11 +2,26 @@ import React, { useState } from "react";
 import { Undo2 } from "lucide-react";
 import style from "./Checkout.module.css";
 import { useNavigate } from "react-router-dom";
+import { useCreateOrder } from "../../api/Order/useCreateOrder";
+import { useCreateCheckoutSession } from "../../api/Payment/useCreateCheckoutSession";
+import toast from "react-hot-toast";
 
 function Checkout() {
-  const [shippingMethod, setShippingMethod] = useState("ship");
-  const [selectedStore, setSelectedStore] = useState(1);
   const navigate = useNavigate();
+  const clientId = sessionStorage.getItem("userId") || "";
+  const storedCoupon = sessionStorage.getItem("appliedCoupon");
+
+  const couponId = storedCoupon ? JSON.parse(storedCoupon).couponId : undefined;
+
+  const [shippingMethod, setShippingMethod] = useState<"ship" | "pickup">(
+    "ship"
+  );
+  const [selectedStore, setSelectedStore] = useState(1);
+  const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
+
+  const createOrderMutation = useCreateOrder();
+  const createCheckoutSession = useCreateCheckoutSession();
 
   const stores = [
     { id: 1, name: "Store A", address: "123 Main St, New York" },
@@ -14,25 +29,54 @@ function Checkout() {
     { id: 3, name: "Store C", address: "789 Market Rd, Chicago" },
   ];
 
-  const countries = [
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "Germany",
-    "France",
-    "Australia",
-    "Japan",
-    "India",
-    "Brazil",
-    "Mexico",
-    "Italy",
-    "Spain",
-  ];
+  const isShipAddressInvalid = shippingMethod === "ship" && !address.trim();
 
-  const handleCheckout = () => {};
+  const handleCheckout = () => {
+    if (!clientId || isShipAddressInvalid) return;
+
+    const deliveryAddress =
+      shippingMethod === "ship"
+        ? address
+        : stores.find((s) => s.id === selectedStore)?.address || "";
+
+    createOrderMutation.mutate(
+      {
+        clientId,
+        deliveryAddress,
+        comment,
+        deliveryMethod: shippingMethod === "ship" ? 0 : 1,
+        discountCouponId: couponId,
+      },
+      {
+        onSuccess: (orderId) => {
+          toast.success("Order created successfully");
+          createCheckoutSession.mutate(
+            {
+              clientId,
+              orderId,
+              couponId,
+            },
+            {
+              onSuccess: (checkoutUrl) => {
+                window.location.href = checkoutUrl;
+              },
+              onError: () => {
+                toast.error("Failed to start payment");
+              },
+            }
+          );
+        },
+        onError: (error) => {
+          toast.error(error.message || "Failed to create order");
+        },
+      }
+    );
+  };
+
   const handleBack = () => {
     navigate("/Cart");
   };
+
   return (
     <div className={style.Container}>
       <div className={style.titleContainer}>
@@ -91,32 +135,35 @@ function Checkout() {
 
       {shippingMethod === "ship" && (
         <div className={style.shipForm}>
-          <div className={style.row}>
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Last Name" />
-          </div>
-
-          <input type="text" placeholder="Address" />
-
-          <div className={style.row}>
-            <select>
-              <option value="">Select Country</option>
-              {countries.map((country, idx) => (
-                <option key={idx} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-            <input type="text" placeholder="City" />
-          </div>
-
-          <div className={style.row}>
-            <input type="text" placeholder="ZIP Code" />
-            <input type="text" placeholder="Phone Number" />
-          </div>
+          <input
+            type="text"
+            placeholder="Delivery Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          {isShipAddressInvalid && (
+            <span style={{ color: "red", fontSize: "14px" }}>
+              Delivery address is required
+            </span>
+          )}
         </div>
       )}
-      <button className={style.PaymentButton} onClick={handleCheckout}>
+
+      <div className={style.commentSection}>
+        <textarea
+          placeholder="Comment (optional)"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      </div>
+
+      <button
+        className={style.PaymentButton}
+        onClick={handleCheckout}
+        disabled={
+          createOrderMutation.status === "pending" || isShipAddressInvalid
+        }
+      >
         Continue to Payment
       </button>
     </div>

@@ -58,14 +58,30 @@ function ShoppingCart() {
         onSuccess: (result) => {
           if (result.isValid) {
             setAppliedCoupon(result);
+
+            // ✅ SAVE TO SESSION STORAGE
+            if (result.couponId) {
+              sessionStorage.setItem(
+                "appliedCoupon",
+                JSON.stringify({
+                  couponId: result.couponId,
+                  discountValue: result.discountValue,
+                })
+              );
+            }
+
             setMessage("Coupon applied");
             setMessageType("success");
           } else {
+            sessionStorage.removeItem("appliedCoupon");
+
+            setAppliedCoupon(null);
             setMessage(result.message ?? "Invalid coupon");
             setMessageType("error");
           }
         },
         onError: () => {
+          sessionStorage.removeItem("appliedCoupon");
           setMessage("Something went wrong");
           setMessageType("error");
         },
@@ -153,7 +169,7 @@ function ShoppingCart() {
           <button
             className={style.ApplyButton}
             onClick={handleApplyCoupon}
-            disabled={verifyCouponMutation.isLoading}
+            disabled={verifyCouponMutation.status === "pending"}
           >
             Apply
           </button>
