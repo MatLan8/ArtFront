@@ -5,6 +5,7 @@ import { useGetAllArtworks } from "../../api/Artwork/useGetAllArtworks";
 import styles from "./Gallery.module.css";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 import { useAddCartArtwork } from "../../api/Cart/useAddCartArtwork";
 import { useAddLikedArtwork } from "../../api/Client/useAddLikedArtwork";
 import { useGetAllClientLikedArtworks } from "../../api/Client/useGetAllClientLikedArtworks";
@@ -114,9 +115,10 @@ export default function Gallery() {
         <ArtCardHolder
           artworks={filteredArtworks}
           likedIds={likedIds}
+          isAuthenticated={!!clientId}
           onAddToCart={(art) => {
-          if (!clientId) return alert("Please log in to add items to cart");
-          if (!art.id) return alert("Invalid artwork");
+          if (!clientId) return toast.error("Please log in to add items to cart");
+          if (!art.id) return toast.error("Invalid artwork");
           addToCart({
             clientId: clientId,
             artworkId: art.id,
@@ -124,25 +126,25 @@ export default function Gallery() {
             price: art.price,
           }, {
             onSuccess: () => {
-              alert(`"${art.name}" added to cart successfully!`);
+              toast.success(`"${art.name}" added to cart`);
             },
             onError: (error) => {
-              alert(`Failed to add to cart: ${error.message}`);
+              toast.error(`Failed to add to cart: ${error.message}`);
             },
           });
         }}
         onToggleLike={(art) =>{          
-          if (!clientId) return alert("Please log in to like artworks");
-          if (!art.id) return alert("Invalid artwork");
+          if (!clientId) return toast.error("Please log in to like artworks");
+          if (!art.id) return toast.error("Invalid artwork");
           Like({
             clientId: clientId,
             artworkId: art.id,},{
             onSuccess: () => {
-              alert(`You liked ${art.name}!`); 
+              toast.success(`You liked ${art.name}!`); 
             },
             onError: (error: AxiosError) => {
               const msg = (error.response?.data as any)?.message || error.response?.data || "Failed to like artwork";
-              alert(msg);
+              toast.error(msg);
             },
           });
             }}
