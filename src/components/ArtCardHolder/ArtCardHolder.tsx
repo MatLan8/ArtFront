@@ -9,9 +9,10 @@ interface ArtCardHolderProps {
   likedIds?: Set<string>;
   onAddToCart?: (artwork: Artwork) => void;
   onToggleLike?: (artwork: Artwork) => void;
+  isAuthenticated?: boolean;
 }
 
-function ArtCardHolder({ artworks, likedIds, onAddToCart, onToggleLike }: ArtCardHolderProps) {
+function ArtCardHolder({ artworks, likedIds, onAddToCart, onToggleLike, isAuthenticated }: ArtCardHolderProps) {
   const breakpointColumns = {
     default: 3,
     1600: 2,
@@ -40,6 +41,7 @@ function ArtCardHolder({ artworks, likedIds, onAddToCart, onToggleLike }: ArtCar
             isLiked={artwork.id ? likedIds?.has(artwork.id) : false}
             onAddToCart={onAddToCart}
             onToggleLike={onToggleLike}
+            isAuthenticated={isAuthenticated}
           />
         </div>
       ))}

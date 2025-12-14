@@ -8,10 +8,11 @@ interface ArtCardProps {
   isLiked?: boolean;
   onAddToCart?: (artwork: Artwork) => void;
   onToggleLike?: (artwork: Artwork) => void;
+  isAuthenticated?: boolean;
 }
 
 /** --- Component --- */
-function ArtCard({ artwork, isLiked = false, onAddToCart, onToggleLike }: ArtCardProps) {
+function ArtCard({ artwork, isLiked = false, onAddToCart, onToggleLike, isAuthenticated = true }: ArtCardProps) {
   const [liked, setLiked] = useState(isLiked);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
@@ -21,8 +22,16 @@ function ArtCard({ artwork, isLiked = false, onAddToCart, onToggleLike }: ArtCar
   }, [isLiked]);
 
   const handleLike = () => {
-    if (liked) return; // keep liked state; don't toggle off
-    setLiked(true);
+    // If not authenticated, don't toggle the heart, but still trigger handler for alert
+    if (!isAuthenticated) {
+      onToggleLike?.(artwork);
+      return;
+    }
+
+    // Keep liked visual state; still trigger handler for feedback
+    if (!liked) {
+      setLiked(true);
+    }
     onToggleLike?.(artwork);
   };
 
