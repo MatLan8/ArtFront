@@ -14,3 +14,7 @@ export type Artwork = {
   artType: number;
   period: number;
 };
+
+export type ArtworkWithFlag = Artwork & {
+  recommended?: boolean;
+};

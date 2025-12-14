@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import FilterPanel from "../../components/FilterPanel/FilterPanel";
 import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
 import { useGetAllArtworks } from "../../api/Artwork/useGetAllArtworks";
+import { useGetAllArtworksWithRecommendations } from "../../api/Artwork/useGetAllArtworksWithRecommendations";
 import styles from "./Gallery.module.css";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { AxiosError } from "axios";
@@ -42,8 +43,12 @@ export default function Gallery() {
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
-  const { data: artworks = [] } = useGetAllArtworks();
   const clientId = sessionStorage.getItem("userId");
+
+  // recomendations logic
+  const { data: recommendedData } = useGetAllArtworksWithRecommendations(clientId ?? "");
+  const { data: artworksFallback = [] } = useGetAllArtworks();
+  const artworks = (clientId && (recommendedData?.length ?? 0) > 0 ? recommendedData : artworksFallback) ?? [];
   const { mutate: addToCart } = useAddCartArtwork();
   const { mutate: Like } = useAddLikedArtwork();
   const { data: likedArtworks = [] } = useGetAllClientLikedArtworks(clientId ?? "");

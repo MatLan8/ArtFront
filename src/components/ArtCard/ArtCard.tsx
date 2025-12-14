@@ -1,13 +1,13 @@
 import { useState, useEffect, memo } from "react";
 import { Heart, ShoppingBag } from "lucide-react";
 import styles from "./ArtCard.module.css";
-import type { Artwork } from "../../types/Artwork";
+import type { ArtworkWithFlag } from "../../types/Artwork";
 
 interface ArtCardProps {
-  artwork: Artwork;
+  artwork: ArtworkWithFlag;
   isLiked?: boolean;
-  onAddToCart?: (artwork: Artwork) => void;
-  onToggleLike?: (artwork: Artwork) => void;
+  onAddToCart?: (artwork: ArtworkWithFlag) => void;
+  onToggleLike?: (artwork: ArtworkWithFlag) => void;
   isAuthenticated?: boolean;
 }
 
@@ -53,6 +53,7 @@ function ArtCard({ artwork, isLiked = false, onAddToCart, onToggleLike, isAuthen
   return (
     <div className={styles.container}>
       <div className={`${styles.imageWrapper} ${imageLoaded || imageFailed ? styles.loaded : ''}`}>
+        {artwork.recommended && <div className={styles.badge}>Recommended</div>}
         <img
           src={artwork.imageUrl}
           alt={`${artwork.name} — ${artwork.author}`}
