@@ -14,7 +14,7 @@ import LikedArt from "./pages/Profile/LikedArt";
 import EditProfile from "./pages/Profile/EditProfile";
 import OrderHistory from "./pages/Profile/OrderHistory";
 import Login from "./pages/Login/Login";
-import ProfitsReport from "./pages/profitsReport/profitsReport";
+import ProfitsReport from "./pages/ProfitsReport/ProfitsReport";
 
 function App() {
   return (
