@@ -18,7 +18,7 @@ export const useGetVendorArtworksSalesDetails = (vendorId: string) => {
       const { data } = await axios.get<ArtworkSalesDetail[]>(
         `${
           import.meta.env.VITE_BASE_URL
-        }/Vendor/ArtworksSalesDetails/${vendorId}`
+        }/Vendor/ArtworksSalesDetails?VendorId=${vendorId}`
       );
       return data;
     },

@@ -14,7 +14,7 @@ export const useGetVendorStats = (vendorId: string) => {
     queryKey: ["vendorStats", vendorId],
     queryFn: async () => {
       const { data } = await axios.get<VendorStats>(
-        `${import.meta.env.VITE_BASE_URL}/Vendor/Stats/${vendorId}`
+        `${import.meta.env.VITE_BASE_URL}/Vendor/Stats?VendorId=${vendorId}`
       );
       return data;
     },
