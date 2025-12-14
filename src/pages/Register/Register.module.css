@@ -57,6 +57,27 @@
   transition: border-color 0.2s ease;
 }
 
+.roleSelect {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 6px;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+}
+
+.roleRow {
+  display: flex;
+  width: 100%;
+}
+
 .registerButton {
   width: 100%;
   background-color: black;
