@@ -15,6 +15,7 @@ import EditProfile from "./pages/Profile/EditProfile";
 import OrderHistory from "./pages/Profile/OrderHistory";
 import Login from "./pages/Login/Login";
 import ProfitsReport from "./pages/ProfitsReport/ProfitsReport";
+import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/Cart" element={<ShoppingCart />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
         </Routes>
       </main>
     </div>
