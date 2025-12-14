@@ -1,13 +1,43 @@
-import React from 'react';
-import styles from './Profile.module.css';
+import { useEffect, useState } from "react";
 
-const LikedArt = () => {
+interface Artwork {
+  artworkId: string;
+  title: string;
+}
+
+export default function LikedArt() {
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const clientId = localStorage.getItem("clientId");
+
+  const load = async () => {
+    const res = await fetch(
+      `https://localhost:5242/api/client/${clientId}/liked-artworks`
+    );
+    setArtworks(await res.json());
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const remove = async (artworkId: string) => {
+    await fetch(
+      `https://localhost:5242/api/client/${clientId}/liked-artworks/${artworkId}`,
+      { method: "DELETE" }
+    );
+    load();
+  };
+
   return (
-    <div className={styles.profileContainer}>
-      <h1 className={styles.title}>Liked Art</h1>
-      <p>Here you can view all the artworks you have liked.</p>
+    <div>
+      <h1>Liked artworks</h1>
+
+      {artworks.map(a => (
+        <div key={a.artworkId}>
+          <span>{a.title}</span>
+          <button onClick={() => remove(a.artworkId)}>Remove</button>
+        </div>
+      ))}
     </div>
   );
-};
-
-export default LikedArt;
+}
