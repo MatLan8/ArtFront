@@ -114,3 +114,42 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+
+.badge.active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+
+.badge.inactive {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+
+.badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge.expired {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.error {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #dc2626;
+}
+
