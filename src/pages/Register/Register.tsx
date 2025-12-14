@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 import style from "./Register.module.css";
 import { useRegister } from "../../api/Auth/useRegister";
 import type { RegisterRequest } from "../../api/Auth/useRegister";
@@ -25,13 +27,42 @@ function Register() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (form.password !== confirmPassword) {
-    alert("Passwords do not match");
-    return;
-  }
-  registerMutation.mutate(form);
-};
+    e.preventDefault();
+    if (form.password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    // Simple phone validation: 9 digits
+    if (!/^\d{9}$/.test(form.phoneNumber)) {
+      toast.error("Phone number must be 9 digits long");
+      return;
+    }
+
+    registerMutation.mutate(form, {
+      onSuccess: () => {
+        toast.success("Registered successfully!");
+      },
+      onError: (error) => {
+        const axErr = error as AxiosError;
+        const raw = axErr.response?.data as any;
+        const serverMsg = (raw && (raw.message || raw.error || raw.title)) as string | undefined;
+
+        // Friendly message mapping
+        let msg = serverMsg || axErr.message || "Failed to register";
+
+        if (serverMsg?.toLowerCase().includes("username")) {
+          msg = "This username is already taken. Please choose another.";
+        } else if (serverMsg?.toLowerCase().includes("email")) {
+          msg = "This email is already registered. Try logging in.";
+        } else if (axErr.response?.status === 500) {
+          msg = "This username is already taken. Please choose another.";
+        }
+
+        toast.error(msg);
+      },
+    });
+  };
   return (
     <div className={style.Container}>
       <span className={style.title}>Registration form</span>
@@ -43,7 +74,16 @@ function Register() {
         </div>
         <div className={style.row}>
           <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required/>
-          <input type="text" pattern="\d{9}" name="phoneNumber" placeholder="Phone number" value={form.phoneNumber} onChange={handleChange} required/>
+          <input
+            type="text"
+            pattern="\d{9}"
+            title="Enter 9 digits"
+            name="phoneNumber"
+            placeholder="Phone number"
+            value={form.phoneNumber}
+            onChange={handleChange}
+            required
+          />
         </div>
         <div className={style.row}>
           <input type="text" name="username" placeholder="Username" value={form.username} onChange={handleChange} required />
@@ -55,8 +95,7 @@ function Register() {
         </div>
         <button type="submit" className={style.registerButton}>Register</button>
         </form>
-      {registerMutation.isError && <p style={{ color: "red" }}>{registerMutation.error.message}</p>}
-      {registerMutation.isSuccess && <p style={{ color: "green" }}>Registered successfully!</p>}
+      {/* Success and error messages handled via toasts */}
     </div>
   );
 }
