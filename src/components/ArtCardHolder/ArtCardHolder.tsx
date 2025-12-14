@@ -1,20 +1,31 @@
+import { memo } from 'react';
 import Masonry from 'react-masonry-css';
-import type { Artwork } from '../ArtCard/ArtCard';
+import type { Artwork } from "../../types/Artwork";
 import ArtCard from '../ArtCard/ArtCard';
 import styles from './ArtCardHolder.module.css';
 
 interface ArtCardHolderProps {
   artworks: Artwork[];
+  likedIds?: Set<string>;
   onAddToCart?: (artwork: Artwork) => void;
   onToggleLike?: (artwork: Artwork) => void;
 }
 
-export default function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: ArtCardHolderProps) {
+function ArtCardHolder({ artworks, likedIds, onAddToCart, onToggleLike }: ArtCardHolderProps) {
   const breakpointColumns = {
     default: 3,
     1600: 2,
     1100: 1
   };
+
+  if (artworks.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <p>No artworks found with the selected filters.</p>
+        <p>Try adjusting your filters to see more results.</p>
+      </div>
+    );
+  }
 
   return (
     <Masonry
@@ -26,6 +37,7 @@ export default function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: A
         <div key={artwork.id} className={styles.masonryItem}>
           <ArtCard
             artwork={artwork}
+            isLiked={artwork.id ? likedIds?.has(artwork.id) : false}
             onAddToCart={onAddToCart}
             onToggleLike={onToggleLike}
           />
@@ -34,3 +46,5 @@ export default function ArtCardHolder({ artworks, onAddToCart, onToggleLike }: A
     </Masonry>
   );
 }
+
+export default memo(ArtCardHolder);

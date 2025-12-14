@@ -1,10 +1,13 @@
 import styles from "./SellerView.module.css";
-import { artworks } from "../../MockUpData/ArtworkMock";
 import SellerCard from "../../components/SellerCard/SellerCard";
 import { useNavigate } from "react-router-dom";
+import { useGetAllArtworksByVendorId } from "../../api/Artwork/useGetAllArtworksByVendorId";
 
 function SellerView() {
   const navigate = useNavigate();
+  const vendorId = sessionStorage.getItem("userId") || "";
+
+  const { data: artworks = [] } = useGetAllArtworksByVendorId(vendorId || "");
 
   const handleAdd = () => {
     navigate("/Add-art");
@@ -19,9 +22,9 @@ function SellerView() {
       <div className={styles.list}>
         <div className={styles.title}>My art</div>
         <div className={styles.divider} />
-        <SellerCard artwork={artworks[0]} />
-        <SellerCard artwork={artworks[1]} />
-        <SellerCard artwork={artworks[2]} />
+        {artworks.map((artwork) => (
+          <SellerCard key={artwork.id} artwork={artwork} />
+        ))}
         <div className={styles.addButton}>
           <button onClick={handleAdd}>Add Art</button>
         </div>
