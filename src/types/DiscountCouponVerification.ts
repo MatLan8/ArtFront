@@ -3,4 +3,5 @@ export type DiscountCouponVerification = {
   errorCode?: string;
   message?: string;
   discountValue?: number;
+  couponId?: string;
 };

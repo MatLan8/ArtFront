@@ -48,6 +48,47 @@ nav a:last-child {
   margin-right: 30px;
 }
 
+.spacer {
+  flex: 1;
+}
+
+.logoutButton {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primary);
+  padding: 0px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-right: 30px;
+}
+
+.logoutButton::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.logoutButton:hover {
+  color: var(--primary);
+}
+
+.logoutButton:hover::after {
+  width: 80%;
+}
+
 nav a:nth-child(4) {
   margin-left: auto;
 }

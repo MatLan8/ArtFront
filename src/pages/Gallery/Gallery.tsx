@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import FilterPanel from "../../components/FilterPanel/FilterPanel";
 import ArtCardHolder from '../../components/ArtCardHolder/ArtCardHolder';
 import { useGetAllArtworks } from "../../api/Artwork/useGetAllArtworks";
+import { useGetAllArtworksWithRecommendations } from "../../api/Artwork/useGetAllArtworksWithRecommendations";
 import styles from "./Gallery.module.css";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { AxiosError } from "axios";
@@ -42,8 +43,17 @@ export default function Gallery() {
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
-  const { data: artworks = [] } = useGetAllArtworks();
   const clientId = sessionStorage.getItem("userId");
+  const userRole = sessionStorage.getItem("userRole");
+  const isVendor = userRole === "Vendor";
+  const isClient = userRole === "Client";
+
+  // recomendations logic
+  const { data: recommendedData } = useGetAllArtworksWithRecommendations(clientId ?? "");
+  const { data: allArtworks } = useGetAllArtworks();
+  const artworks = Array.isArray(recommendedData) && recommendedData.length > 0 
+    ? recommendedData 
+    : (Array.isArray(allArtworks) ? allArtworks : []);
   const { mutate: addToCart } = useAddCartArtwork();
   const { mutate: Like } = useAddLikedArtwork();
   const { data: likedArtworks = [] } = useGetAllClientLikedArtworks(clientId ?? "");
@@ -115,8 +125,8 @@ export default function Gallery() {
         <ArtCardHolder
           artworks={filteredArtworks}
           likedIds={likedIds}
-          isAuthenticated={!!clientId}
-          onAddToCart={(art) => {
+          isAuthenticated={isClient}
+          onAddToCart={isClient ? (art) => {
           if (!clientId) return toast.error("Please log in to add items to cart");
           if (!art.id) return toast.error("Invalid artwork");
           addToCart({
@@ -132,8 +142,8 @@ export default function Gallery() {
               toast.error(`Failed to add to cart: ${error.message}`);
             },
           });
-        }}
-        onToggleLike={(art) =>{          
+        } : undefined}
+        onToggleLike={isClient ? (art) =>{          
           if (!clientId) return toast.error("Please log in to like artworks");
           if (!art.id) return toast.error("Invalid artwork");
           Like({
@@ -147,7 +157,7 @@ export default function Gallery() {
               toast.error(msg);
             },
           });
-            }}
+            } : undefined}
         />
       </main>
     </div>

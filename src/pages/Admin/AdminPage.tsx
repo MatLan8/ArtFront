@@ -1,28 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../../components/Modals/Modal";
 import "./AdminPage.css";
 
+import type { DiscountCoupon } from "../../types/DiscountCoupon";
 
-interface DiscountCoupon {
-  id: string;
-  couponCode: string;
-  description: string;
-  discountAmount: number;
-  startingPrice: number;
-  beginAt: string;
-  expireAt: string;
-  isActive: boolean;
-}
+import { useGetAllDiscountCoupons } from "../../api/DiscountCoupon/useGetAllDiscountCoupons";
+import { useCreateDiscountCoupon } from "../../api/DiscountCoupon/useCreateDiscountCoupon";
+import { useUpdateDiscountCoupon } from "../../api/DiscountCoupon/useUpdateDiscountCoupon";
 
 type ModalMode = "create" | "view" | "edit";
 
-const API_BASE = "http://localhost:5242/api/Discountcoupon";
-
 export default function AdminPage() {
-  const [coupons, setCoupons] = useState<DiscountCoupon[]>([]);
   const [selected, setSelected] = useState<DiscountCoupon | null>(null);
   const [mode, setMode] = useState<ModalMode | null>(null);
-
 
   const [couponCode, setCouponCode] = useState("");
   const [discountAmount, setDiscountAmount] = useState<number | "">("");
@@ -33,18 +23,12 @@ export default function AdminPage() {
   const [touched, setTouched] = useState({
     couponCode: false,
     discountAmount: false,
-    dates: false
+    dates: false,
   });
 
-  useEffect(() => {
-    loadCoupons();
-  }, []);
-
-  const loadCoupons = async () => {
-    const res = await fetch(`${API_BASE}/GetAll`);
-    if (res.ok) setCoupons(await res.json());
-  };
-
+  const { data: coupons } = useGetAllDiscountCoupons();
+  const couponMutation = useCreateDiscountCoupon();
+  const updateCouponMutation = useUpdateDiscountCoupon();
 
   const computeStatus = (c: DiscountCoupon) => {
     const now = new Date();
@@ -70,11 +54,7 @@ export default function AdminPage() {
     datesProvided && new Date(expireAt) > new Date(beginAt);
 
   const formValid =
-    codeValid &&
-    discountValid &&
-    datesProvided &&
-    dateOrderValid;
-
+    codeValid && discountValid && datesProvided && dateOrderValid;
 
   const resetForm = () => {
     setCouponCode("");
@@ -86,7 +66,7 @@ export default function AdminPage() {
     setTouched({
       couponCode: false,
       discountAmount: false,
-      dates: false
+      dates: false,
     });
   };
 
@@ -116,70 +96,62 @@ export default function AdminPage() {
     setTouched({
       couponCode: false,
       discountAmount: false,
-      dates: false
+      dates: false,
     });
     setMode("edit");
   };
 
-
   const createCoupon = async () => {
     if (!formValid) return;
 
-    await fetch(`${API_BASE}/Create`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        couponCode,
-        description,
-        discountAmount,
-        beginAt,
-        expireAt,
-        startingPrice: 0,
-        isActive: true
-      })
+    couponMutation.mutate({
+      couponCode,
+      description,
+      discountAmount,
+      beginAt,
+      expireAt,
+      startingPrice: 0,
+      isActive: true,
     });
 
     closeModal();
-    loadCoupons();
   };
 
   const updateCoupon = async () => {
     if (!selected || !formValid) return;
 
-    await fetch(`${API_BASE}/Update`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: selected.id,
-        couponCode,
-        description,
-        discountAmount,
-        beginAt,
-        expireAt,
-        isActive: selected.isActive
-      })
+    updateCouponMutation.mutate({
+      id: selected.id,
+      couponCode,
+      description,
+      discountAmount,
+      beginAt,
+      expireAt,
+      isActive: selected.isActive,
     });
 
     closeModal();
-    loadCoupons();
   };
 
   const toggleActive = async () => {
     if (!selected) return;
 
-    await fetch(`${API_BASE}/Update`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...selected,
-        isActive: !selected.isActive
-      })
+    updateCouponMutation.mutate({
+      id: selected.id,
+      couponCode: selected.couponCode,
+      description: selected.description,
+      discountAmount: selected.discountAmount,
+      beginAt: selected.beginAt,
+      expireAt: selected.expireAt,
+      isActive: !selected.isActive,
     });
 
     closeModal();
-    loadCoupons();
   };
 
+  if (!coupons) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="admin-container">
@@ -199,7 +171,7 @@ export default function AdminPage() {
           </tr>
         </thead>
         <tbody>
-          {coupons.map(c => (
+          {coupons.map((c) => (
             <tr key={c.id}>
               <td className="link" onClick={() => openView(c)}>
                 {c.couponCode}
@@ -219,7 +191,6 @@ export default function AdminPage() {
         </tbody>
       </table>
 
-
       {mode && (
         <Modal
           title={
@@ -237,12 +208,8 @@ export default function AdminPage() {
                 placeholder="Coupon Code"
                 value={couponCode}
                 disabled={mode === "edit"}
-                onBlur={() =>
-                  setTouched(t => ({ ...t, couponCode: true }))
-                }
-                onChange={e =>
-                  setCouponCode(e.target.value.toUpperCase())
-                }
+                onBlur={() => setTouched((t) => ({ ...t, couponCode: true }))}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
               />
               {touched.couponCode && !codeValid && (
                 <div className="error">
@@ -255,36 +222,28 @@ export default function AdminPage() {
                 placeholder="Discount (1–100)"
                 value={discountAmount}
                 onBlur={() =>
-                  setTouched(t => ({ ...t, discountAmount: true }))
+                  setTouched((t) => ({ ...t, discountAmount: true }))
                 }
-                onChange={e =>
-                  setDiscountAmount(Number(e.target.value))
-                }
+                onChange={(e) => setDiscountAmount(Number(e.target.value))}
               />
               {touched.discountAmount && !discountValid && (
-                <div className="error">
-                  Discount must be between 1 and 100
-                </div>
+                <div className="error">Discount must be between 1 and 100</div>
               )}
 
               <label>Begin at</label>
               <input
                 type="date"
                 value={beginAt}
-                onBlur={() =>
-                  setTouched(t => ({ ...t, dates: true }))
-                }
-                onChange={e => setBeginAt(e.target.value)}
+                onBlur={() => setTouched((t) => ({ ...t, dates: true }))}
+                onChange={(e) => setBeginAt(e.target.value)}
               />
 
               <label>Expire at</label>
               <input
                 type="date"
                 value={expireAt}
-                onBlur={() =>
-                  setTouched(t => ({ ...t, dates: true }))
-                }
-                onChange={e => setExpireAt(e.target.value)}
+                onBlur={() => setTouched((t) => ({ ...t, dates: true }))}
+                onChange={(e) => setExpireAt(e.target.value)}
               />
 
               {touched.dates && !datesProvided && (
@@ -293,26 +252,22 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {touched.dates &&
-                datesProvided &&
-                !dateOrderValid && (
-                  <div className="error">
-                    Expire date must be after begin date
-                  </div>
-                )}
+              {touched.dates && datesProvided && !dateOrderValid && (
+                <div className="error">
+                  Expire date must be after begin date
+                </div>
+              )}
 
               <textarea
                 placeholder="Description"
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
 
               <button
                 className="save-btn"
                 disabled={!formValid}
-                onClick={
-                  mode === "edit" ? updateCoupon : createCoupon
-                }
+                onClick={mode === "edit" ? updateCoupon : createCoupon}
               >
                 Save
               </button>
@@ -321,10 +276,19 @@ export default function AdminPage() {
 
           {mode === "view" && selected && (
             <>
-              <p><b>Discount:</b> {selected.discountAmount}%</p>
-              <p><b>Begin:</b> {new Date(selected.beginAt).toLocaleDateString()}</p>
-              <p><b>Expire:</b> {new Date(selected.expireAt).toLocaleDateString()}</p>
-              <p><b>Description:</b> {selected.description || "—"}</p>
+              <p>
+                <b>Discount:</b> {selected.discountAmount}%
+              </p>
+              <p>
+                <b>Begin:</b> {new Date(selected.beginAt).toLocaleDateString()}
+              </p>
+              <p>
+                <b>Expire:</b>{" "}
+                {new Date(selected.expireAt).toLocaleDateString()}
+              </p>
+              <p>
+                <b>Description:</b> {selected.description || "—"}
+              </p>
 
               <div className="modal-buttons">
                 <button className="save-btn" onClick={openEdit}>
