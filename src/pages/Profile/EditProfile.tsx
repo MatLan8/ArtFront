@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "../../components/Modals/Modal";
+import styles from "./Profile.module.css";
 
 interface Props {
   client: any;
@@ -9,13 +10,12 @@ interface Props {
 
 export default function EditProfileModal({ client, onClose, onSaved }: Props) {
   const [form, setForm] = useState({ ...client });
-  const clientId = localStorage.getItem("clientId");
 
   const handleChange = (e: any) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const save = async () => {
-    await fetch(`https://localhost:5242/api/client/${clientId}`, {
+    await fetch(`https://localhost:7224/api/client/UpdateClient`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -27,13 +27,38 @@ export default function EditProfileModal({ client, onClose, onSaved }: Props) {
 
   return (
     <Modal title="Edit profile" onClose={onClose}>
-      <input name="firstName" value={form.firstName || ""} onChange={handleChange} placeholder="First name" />
-      <input name="lastName" value={form.lastName || ""} onChange={handleChange} placeholder="Last name" />
-      <input name="email" value={form.email || ""} onChange={handleChange} placeholder="Email" />
-      <input name="phoneNumber" value={form.phoneNumber || ""} onChange={handleChange} placeholder="Phone" />
-      <input name="address" value={form.address || ""} onChange={handleChange} placeholder="Address" />
+  <div className={styles.formRow}>
 
-      <button onClick={save}>Save</button>
-    </Modal>
+    <label>First name</label>
+    <input name="firstName" value={form.firstName || ""} onChange={handleChange} />
+  </div>
+
+  <div className={styles.formRow}>
+
+    <label>Last name</label>
+    <input name="lastName" value={form.lastName || ""} onChange={handleChange} />
+  </div>
+
+  <div className={styles.formRow}>
+
+    <label>Email</label>
+    <input name="email" value={form.email || ""} onChange={handleChange} />
+  </div>
+
+  <div className={styles.formRow}>
+
+    <label>Phone number</label>
+    <input name="phoneNumber" value={form.phoneNumber || ""} onChange={handleChange} />
+  </div>
+
+  <div className={styles.formRow}>
+
+    <label>Address</label>
+    <input name="address" value={form.address || ""} onChange={handleChange} />
+  </div>
+
+  <button onClick={save}>Save</button>
+</Modal>
+
   );
 }
