@@ -89,7 +89,6 @@ function ShoppingCart() {
     );
   };
 
-  // Auto-hide messages
   useEffect(() => {
     if (!message) return;
 
