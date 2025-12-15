@@ -1,80 +1,64 @@
 import { useState } from "react";
+import Modal from "../../components/Modals/Modal";
 import styles from "./Profile.module.css";
 
-const EditProfile = () => {
-  const [user, setUser] = useState({
-    email: "john.doe@example.com",
-    password: "********",
-    phone: "+1234567890",
-    name: "John",
-    surname: "Doe",
-    address: "123 Main Street, Springfield, USA",
-  });
+interface Props {
+  client: any;
+  onClose: () => void;
+  onSaved: (c: any) => void;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({ ...prevUser, [name]: value }));
+export default function EditProfileModal({ client, onClose, onSaved }: Props) {
+  const [form, setForm] = useState({ ...client });
+
+  const handleChange = (e: any) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const save = async () => {
+    await fetch(`https://localhost:7224/api/client/UpdateClient`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    onSaved(form);
+    onClose();
   };
 
-  const handleSubmit = () => {};
-
   return (
-    <div className={styles.profileContainer}>
-      <h1 className={styles.title}>Edit Profile Information</h1>
-      <div className={styles.infoSection}>
-        <label>Email Address:</label>
-        <input
-          type="email"
-          name="email"
-          value={user.email}
-          onChange={handleChange}
-        />
+    <Modal title="Edit profile" onClose={onClose}>
+  <div className={styles.formRow}>
 
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={user.password}
-          onChange={handleChange}
-        />
+    <label>First name</label>
+    <input name="firstName" value={form.firstName || ""} onChange={handleChange} />
+  </div>
 
-        <label>Phone Number:</label>
-        <input
-          type="tel"
-          name="phone"
-          value={user.phone}
-          onChange={handleChange}
-        />
+  <div className={styles.formRow}>
 
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={user.name}
-          onChange={handleChange}
-        />
+    <label>Last name</label>
+    <input name="lastName" value={form.lastName || ""} onChange={handleChange} />
+  </div>
 
-        <label>Surname:</label>
-        <input
-          type="text"
-          name="surname"
-          value={user.surname}
-          onChange={handleChange}
-        />
+  <div className={styles.formRow}>
 
-        <label>Address:</label>
-        <input
-          type="text"
-          name="address"
-          value={user.address}
-          onChange={handleChange}
-        />
-      </div>
-      <button className={styles.saveButton} onClick={handleSubmit}>
-        Save Changes
-      </button>
-    </div>
+    <label>Email</label>
+    <input name="email" value={form.email || ""} onChange={handleChange} />
+  </div>
+
+  <div className={styles.formRow}>
+
+    <label>Phone number</label>
+    <input name="phoneNumber" value={form.phoneNumber || ""} onChange={handleChange} />
+  </div>
+
+  <div className={styles.formRow}>
+
+    <label>Address</label>
+    <input name="address" value={form.address || ""} onChange={handleChange} />
+  </div>
+
+  <button onClick={save}>Save</button>
+</Modal>
+
   );
-};
-
-export default EditProfile;
+}

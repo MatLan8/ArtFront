@@ -1,46 +1,58 @@
-import styles from './Profile.module.css';
+import { useEffect, useState } from "react";
+import styles from "./Profile.module.css";
 
-const OrderHistory = () => {
-  const orders = [
-    {
-      orderDate: "2025-10-01",
-      sum: "$150.00",
-      address: "123 Main Street, Springfield, USA",
-      paymentMethod: "Credit Card",
-      deliveryDate: "2025-10-05",
-      trackingNumber: "TRACK12345",
-      orderComment: "Leave at the front door.",
-      discountPercent: 10,
-    },
-    {
-      orderDate: "2025-09-15",
-      sum: "$200.00",
-      address: "456 Elm Street, Springfield, USA",
-      paymentMethod: "PayPal",
-      deliveryDate: "2025-09-20",
-      trackingNumber: "TRACK67890",
-      orderComment: "Ring the bell upon delivery.",
-      discountPercent: 5,
-    },
-  ];
+interface Order {
+  id: string;
+  createdAt: string;
+  totalSum: number;
+  deliveryStatus: string;
+}
 
-  return (
-    <div className={styles.profileContainer}>
-      <h1 className={styles.title}>Order History</h1>
-      {orders.map((order, index) => (
-        <div key={index} className={styles.orderCard}>
-          <p><strong>Order Date:</strong> {order.orderDate}</p>
-          <p><strong>Sum:</strong> {order.sum}</p>
-          <p><strong>Address:</strong> {order.address}</p>
-          <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
-          <p><strong>Delivery Date:</strong> {order.deliveryDate}</p>
-          <p><strong>Tracking Number:</strong> {order.trackingNumber}</p>
-          <p><strong>Order Comment:</strong> {order.orderComment}</p>
-          <p><strong>Discount Percent:</strong> {order.discountPercent}%</p>
-        </div>
-      ))}
+export default function OrderHistory() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const clientId = sessionStorage.getItem("userId");
+
+  useEffect(() => {
+    if (!clientId) return;
+
+    fetch(`https://localhost:7224/api/client/${clientId}/orders`)
+      .then(res => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(setOrders)
+      .catch(() => console.error("Failed to fetch orders"));
+  }, []);
+
+ return (
+  <div className={styles.orderHistoryContainer}>
+    
+    <h1>Order history</h1>
+
+    {orders.length === 0 && (
+      <p className="noOrders">No orders</p>
+    )}
+
+    {orders.map(o => (
+  <div className={styles.orderCard} key={o.id}>
+    <div>
+      <p><b>Order ID:</b> {o.id.slice(0, 8)}</p>
+      <p><b>Date:</b> {new Date(o.createdAt).toLocaleDateString()}</p>
     </div>
-  );
-};
 
-export default OrderHistory;
+    <div className={styles.orderMeta}>
+  <p className={styles.orderTotal}>
+    <span className={styles.label}>Total:</span> {o.totalSum} €
+  </p>
+
+  <p className={styles.orderStatus}>
+    <span className={styles.label}>Status:</span> {o.deliveryStatus}
+  </p>
+</div>
+
+  </div>
+))}
+  </div>
+);
+
+}
