@@ -35,7 +35,8 @@ function NavBar() {
       {!userRole && <Link to="/Login">Login</Link>}
       {!userRole && <Link to="/Register">Register</Link>}
       {userRole === "Admin" && <Link to="/Admin">Admin</Link>}
-      {userRole && <Link to="/Profile">Profile</Link>}
+      {userRole === "Client" && <Link to="/Profile">Profile</Link>}
+
       {userRole === "Client" && (
         <Link to="/Cart">
           <ShoppingBag size={20} />
