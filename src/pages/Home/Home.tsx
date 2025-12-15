@@ -12,6 +12,9 @@ import toast from "react-hot-toast";
 
 export default function Home() {
   const clientId = sessionStorage.getItem("userId");
+  const userRole = sessionStorage.getItem("userRole");
+  const isVendor = userRole === "Vendor";
+  const isClient = userRole === "Client";
   const { mutate: addToCart } = useAddCartArtwork();
   const { mutate: Like } = useAddLikedArtwork();
   const { data: likedArtworks = [] } = useGetAllClientLikedArtworks(clientId ?? "");
@@ -70,8 +73,8 @@ export default function Home() {
             <ArtCardHolder
             artworks={featuredArtworks}
           likedIds={likedIds}
-          isAuthenticated={!!clientId}
-            onAddToCart={(art) => {
+          isAuthenticated={isClient}
+            onAddToCart={isClient ? (art) => {
               if (!clientId) return toast.error("Please log in to add items to cart");
               if (!art.id) return toast.error("Invalid artwork");
               addToCart({
@@ -87,8 +90,8 @@ export default function Home() {
                   toast.error(`Failed to add to cart: ${error.message}`);
                 },
               });
-            }}
-            onToggleLike={(art) => {          
+            } : undefined}
+            onToggleLike={isClient ? (art) => {          
               if (!clientId) return toast.error("Please log in to like artworks");
               if (!art.id) return toast.error("Invalid artwork");
               Like(
@@ -106,7 +109,7 @@ export default function Home() {
                   },
                 }
               );
-            }}
+            } : undefined}
             />
         </div>
         </section>

@@ -44,6 +44,9 @@ export default function Gallery() {
   const [isMobile, setIsMobile] = useState(false);
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
   const clientId = sessionStorage.getItem("userId");
+  const userRole = sessionStorage.getItem("userRole");
+  const isVendor = userRole === "Vendor";
+  const isClient = userRole === "Client";
 
   // recomendations logic
   const { data: recommendedData } = useGetAllArtworksWithRecommendations(clientId ?? "");
@@ -122,8 +125,8 @@ export default function Gallery() {
         <ArtCardHolder
           artworks={filteredArtworks}
           likedIds={likedIds}
-          isAuthenticated={!!clientId}
-          onAddToCart={(art) => {
+          isAuthenticated={isClient}
+          onAddToCart={isClient ? (art) => {
           if (!clientId) return toast.error("Please log in to add items to cart");
           if (!art.id) return toast.error("Invalid artwork");
           addToCart({
@@ -139,8 +142,8 @@ export default function Gallery() {
               toast.error(`Failed to add to cart: ${error.message}`);
             },
           });
-        }}
-        onToggleLike={(art) =>{          
+        } : undefined}
+        onToggleLike={isClient ? (art) =>{          
           if (!clientId) return toast.error("Please log in to like artworks");
           if (!art.id) return toast.error("Invalid artwork");
           Like({
@@ -154,7 +157,7 @@ export default function Gallery() {
               toast.error(msg);
             },
           });
-            }}
+            } : undefined}
         />
       </main>
     </div>
